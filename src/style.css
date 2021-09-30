@@ -10,6 +10,8 @@ body {
     grid-template-columns: repeat(4, 1fr);
     height: 100vh;
     background-color: #1f1f1f;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100%;
 }
 
 header {
@@ -30,8 +32,12 @@ aside>ul {
     margin-bottom: 50px;
 }
 
-aside>ul>ul>img {
+aside>ul>#default>img {
     vertical-align: sub;
+}
+
+aside>ul>#default {
+    background-color: #363636;
 }
 
 #projects>li {
@@ -41,7 +47,7 @@ aside>ul>ul>img {
 
 #projects>#more {
     background-color: #282828;
-    vertical-align: sub;
+    vertical-align: bottom;
     border: none;
 }
 
@@ -51,12 +57,27 @@ aside>ul>ul>img {
 
 #projects>#add-project {
     background-color: #282828;
-    vertical-align: middle;
+    vertical-align: bottom;
     border: none;
 }
 
-#projects>#add-project {
+#projects>#add-project, #add-project-btn, #remove-project-btn {
     cursor: pointer;
+}
+
+#project-input>button, #project-input>input {
+    color: black;
+}
+
+#add-project-btn {
+    margin-right: 5px;
+    background-color: rgb(27, 147, 202);
+    border: none;
+}
+
+#remove-project-btn {
+    background-color: #474646;
+    border: none;
 }
 
 #content {
