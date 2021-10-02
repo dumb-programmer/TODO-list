@@ -33,7 +33,7 @@ aside>ul {
 }
 
 aside>ul>#default>img {
-    vertical-align: sub;
+    /* vertical-align: sub; */
 }
 
 aside>ul>#default {
@@ -47,7 +47,6 @@ aside>ul>#default {
 
 #projects>#more {
     background-color: #282828;
-    vertical-align: bottom;
     border: none;
 }
 
@@ -55,13 +54,13 @@ aside>ul>#default {
     cursor: pointer;
 }
 
-#projects>#add-project {
+#projects>#new-project {
     background-color: #282828;
-    vertical-align: bottom;
+    /* vertical-align: baseline; */
     border: none;
 }
 
-#projects>#add-project, #add-project-btn, #remove-project-btn {
+button {
     cursor: pointer;
 }
 
