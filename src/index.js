@@ -12,10 +12,12 @@ import DOM from './DOM.js';
 // project1.addTODO(todo2);
 // project1.addTODO(todo3);
 
-// let projectsList = [project1];
+let projectsList = [Project("Default")];
 
 let dom = DOM();
 
 // dom.renderProjects(projectsList);
 
 dom.render();
+
+export default projectsList;
