@@ -1,5 +1,5 @@
-import ProjectDOM from './ProjectDOM.js';
-
+import { ProjectDOM } from './ProjectDOM.js';
+import TODO_DOM from './TODO_DOM.js';
 
 function DOM() {
     // const main = document.querySelector("#content");
@@ -40,7 +40,9 @@ function DOM() {
 
     function render() {
         let projectDOM = ProjectDOM();
+        let todoDOM = TODO_DOM();
         projectDOM.render();
+        todoDOM.render();
     }
 
     return { render }

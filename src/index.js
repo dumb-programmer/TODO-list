@@ -14,10 +14,20 @@ import DOM from './DOM.js';
 
 let projectsList = [Project("Default")];
 
+// let myStorage = localStorage;
+// myStorage.setItem('projectsList', JSON.stringify([new Project('Default')]));
+
+// let projectsList = JSON.parse(myStorage.getItem('projectsList'));
+// console.log(projectsList[0]);
+
+projectsList[0].addTODO(TODO('TEST1', 'lorem epsum', '10/9/2021'))
+projectsList[0].addTODO(TODO('TEST2', 'lorem e1312', '14/9/2021'))
+projectsList[0].addTODO(TODO('TEST3', 'lorem 76576', '16/9/2021'))
+
 let dom = DOM();
 
 // dom.renderProjects(projectsList);
 
 dom.render();
 
-export default projectsList;
+export { projectsList };

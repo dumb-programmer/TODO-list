@@ -1,4 +1,4 @@
-function TODO(Title, Description, DueDate) {
+function TODO(Title, Description, DueDate, Priority) {
     function getTitle() {
         return Title
     }
@@ -8,21 +8,25 @@ function TODO(Title, Description, DueDate) {
     function getDueDate() {
         return DueDate
     }
+    function getPriority(){
+        return Priority;
+    }
 
     function setTitle(newTitle) {
         Title = newTitle
-        return Title
     }
     function setDescription(newDescription) {
         Description = newDescription
-        return Description
     }
     function setDueDate(newDueDate) {
         DueDate = newDueDate
-        return DueDate
+    }
+    
+    function setPriority(newPriority){
+        Priority = newPriority;
     }
 
-    return { getTitle, getDescription, getDueDate, setTitle, setDescription, setDueDate }
+    return { getTitle, getDescription, getDueDate, getPriority, setTitle, setDescription, setDueDate, setPriority }
 }
 
 export default TODO;

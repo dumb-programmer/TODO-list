@@ -1,17 +1,38 @@
-import projectsList from './index.js';
+import { projectsList, myStorage } from './index.js';
 import Project from './Project.js';
+// import TODO from './TODO.js';
+import TODO_DOM from './TODO_DOM.js';
+
+let selectedProject = document.querySelector("#default");
 
 function ProjectDOM() {
     const ulProjects = document.querySelector("#projects");
+    const todo_dom = TODO_DOM();
+
+    function addEventListenersToProjects() {
+        const lis = document.querySelectorAll("#projects>li");
+        // console.log(lis);
+        lis.forEach((li) => {
+            li.addEventListener('click', (event) => {
+                // console.log(typeof JSON.parse(myStorage.projectsList));
+                selectedProject.style.backgroundColor = "#282828";
+                li.style.backgroundColor = "#363636";
+                selectedProject = event.target;
+                // console.log(selectedProject);
+                // todo_dom.clearScreen();
+                todo_dom.renderTODOs(selectedProject);
+            })
+        })
+    }
 
     function renderProjects(projectsList) {
-        console.log(projectsList.length);
+        // console.log(projectsList.length);
         for (let i = 1; i < projectsList.length; i++) {
             const li = document.createElement('li');
             li.setAttribute('data-index', i);
             const deleteBtn = document.createElement('button');
             const img = document.createElement('img');
-            img['src'] = "../src/delete.png";
+            img['src'] = "../dist/delete.png";
             img.setAttribute('remove-btn-index', projectsList.length - 1);
             deleteBtn.setAttribute('id', 'project-delete-btn');
             deleteBtn.setAttribute('data-btn-index', i);
@@ -31,13 +52,14 @@ function ProjectDOM() {
             li.append(deleteBtn);
             ulProjects.append(li);
         }
+        addEventListenersToProjects();
     }
 
     function appendProject(projectsList) {
         const li = document.createElement('li');
         const deleteBtn = document.createElement('button');
         const img = document.createElement('img');
-        img['src'] = "../src/delete.png";
+        img['src'] = "../dist/delete.png";
         img.setAttribute('remove-btn-index', projectsList.length - 1);
         deleteBtn.setAttribute('id', 'project-delete-btn');
         deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
@@ -51,21 +73,23 @@ function ProjectDOM() {
         deleteBtn.addEventListener('click', (event) => {
             let index = event.target.getAttribute("remove-btn-index");
             projectsList.splice(index, index);
-            console.log(projectsList);
+            // console.log(projectsList);
             clearProjectsList();
             renderProjects(projectsList);
-            console.log(index);
+            // console.log(index);
         })
 
         li.textContent = projectsList[projectsList.length - 1].getName();
         li.setAttribute('data-index', projectsList.length - 1);
         li.append(deleteBtn);
         ulProjects.append(li);
+        addEventListenersToProjects();
     }
 
     function addEventListeners() {
         const projectAddBtn = document.querySelector("#new-project");
         const projectMoreBtn = document.querySelector("#more");
+        const defaultProject = document.querySelector("#default");
 
         projectAddBtn.addEventListener('click', () => {
             const li = document.createElement('li');
@@ -77,13 +101,13 @@ function ProjectDOM() {
 
             addBtn.addEventListener('click', () => {
                 const name = input.value;
-                const project = Project(name);
+                const project = new Project(name);
                 projectsList.push(project);
 
                 const li = document.querySelector("#project-input");
                 ulProjects.removeChild(li);
                 appendProject(projectsList);
-                console.log(projectsList);
+                // console.log(projectsList);
             })
 
             const cancelBtn = document.createElement('button');
@@ -93,7 +117,7 @@ function ProjectDOM() {
             cancelBtn.addEventListener('click', () => {
                 const li = document.querySelector("#project-input");
                 ulProjects.removeChild(li);
-                console.log(projectsList);
+                // console.log(projectsList);
             })
 
             li.setAttribute('id', 'project-input');
@@ -107,19 +131,28 @@ function ProjectDOM() {
         projectMoreBtn.addEventListener('click', () => {
             const lis = document.querySelectorAll("#projects>li");
             const icon = document.querySelector("#more>img");
-            console.log(lis)
+            // console.log(lis);
             if (lis.length > 0) {
-                icon['src'] = "../src/up-chevron.png";
+                icon['src'] = "../dist/up-chevron.png";
                 lis.forEach((li) => {
                     ulProjects.removeChild(li);
                 });
             }
             else {
-                icon['src'] = "../src/down-chevron.png";
-                console.log(icon);
+                icon['src'] = "../dist/down-chevron.png";
+                // console.log(icon);
                 renderProjects(projectsList);
-                console.log("hello");
+                // console.log("hello");
             }
+        })
+
+        defaultProject.addEventListener('click', (event) => {
+            selectedProject.style.backgroundColor = "#282828";
+            defaultProject.style.backgroundColor = "#363636";
+            selectedProject = event.target;
+            // console.log(selectedProject);
+            // todo_dom.clearScreen();
+            todo_dom.renderTODOs(selectedProject);
         })
 
         // if (projectDeleteBtns) {
@@ -147,4 +180,4 @@ function ProjectDOM() {
     return { render }
 }
 
-export default ProjectDOM;
+export { ProjectDOM, selectedProject };

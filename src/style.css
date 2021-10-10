@@ -4,14 +4,14 @@
     color: #e2e2e2;
 }
 
-body {
+.grid-container {
     display: grid;
     grid-template-areas: "head head head head head" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "foot foot foot foot foot";
     grid-template-columns: repeat(4, 1fr);
     height: 100vh;
     background-color: #1f1f1f;
     grid-template-rows: auto 1fr auto;
-    min-height: 100%;
+    /* min-height: 100%; */
 }
 
 header {
@@ -32,17 +32,19 @@ aside>ul {
     margin-bottom: 50px;
 }
 
-aside>ul>#default>img {
-    /* vertical-align: sub; */
-}
-
 aside>ul>#default {
     background-color: #363636;
+    cursor: pointer;
 }
 
 #projects>li {
     margin-left: 50px;
     list-style: circle;
+    cursor: pointer;
+}
+
+#projects>li:hover {
+    background-color: #363636;
 }
 
 #projects>#more {
@@ -56,7 +58,6 @@ aside>ul>#default {
 
 #projects>#new-project {
     background-color: #282828;
-    /* vertical-align: baseline; */
     border: none;
 }
 
@@ -95,6 +96,21 @@ button {
     padding: 10px;
 }
 
+#content>li>#add {
+    color: black;
+    font-size: 30px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+#content>li>#add:hover {
+    background-color: rgb(27, 147, 202);
+}
+
 footer {
     grid-area: foot;
     text-align: center;
@@ -103,4 +119,65 @@ footer {
 
 header, footer {
     border: 2px solid #1c1c1c;
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form {
+    position: absolute;
+    background-color: rgb(77, 77, 77);
+    top: 30%;
+    right: 50%;
+    border: 2px solid black;
+}
+
+input[type="text"], input[type="date"], textarea, select{
+    color: black;
+}
+
+button {
+    padding: 3px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.container {
+    padding: 10px;
+    color: black;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.first {
+    margin-right: 20px;
+}
+
+#form-ok {
+    background-color: rgb(27, 147, 202);
+    width: 60px;
+    border: none;
+}
+
+#form-cancel {
+    border: none;
+    color: black;
+}
+
+#add-todo {
+    background-color: rgb(27, 147, 202);
+    width: 60px;
+    border: none;
+}
+
+#cancel-todo {
+    /* background-color: #ffffff; */
+    /* border: 2px solid #eee; */
+    border: none;
+    color: black;
 }
