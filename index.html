@@ -9,38 +9,45 @@
 </head>
 
 <body>
-    <header>
-        <h1>TODO List</h1>
-    </header>
+    <div class="grid-container">
 
-    <div id="content">
-        <li>New TODO</li>
-        <li>New TODO</li>
-        <li>New TODO</li>
-        <li>New TODO</li>
+        <header>
+            <h1>TODO List</h1>
+        </header>
 
-    </div>
+        <div id="content">
+            <li id="new-todo">
+                <button id="add">+</button>
+            </li>
+        </div>
 
-    <aside>
-        <ul>
-            <ul id="default">
-                <img src="./inbox.png" /> Default
+        <aside>
+            <ul>
+                <ul id="default">
+                    <img src="./inbox.png" /> Default
+                </ul>
+                <ul id="projects">
+                    <button id="more">
+                        <img src="./down-chevron.png" />
+                    </button>
+
+                    Projects
+
+                    <button id="new-project">
+                        <img src="./plus.png" />
+                    </button>
+                </ul>
             </ul>
-            <ul id="projects">
-                <button id="more">
-                    <img src="./down-chevron.png" />
-                </button>
 
-                Projects
+        </aside>
+        <footer>
+            <div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry"
+                    title="Kiranshastry">Kiranshastry</a>, and <a href="https://www.flaticon.com/authors/those-icons"
+                    title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/"
+                    title="Flaticon">www.flaticon.com</a></div>
+        </footer>
 
-                <button id="new-project">
-                    <img src="./plus.png" />
-                </button>
-            </ul>
-        </ul>
-    </aside>
-    <footer><div>Icons made by <a href="https://www.flaticon.com/authors/kiranshastry" title="Kiranshastry">Kiranshastry</a>, and <a href="https://www.flaticon.com/authors/those-icons" title="Those Icons">Those Icons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div></footer>
-    <script src="./main.js"></script>
+        <script src="./main.js"></script>
 </body>
 
 </html>
