@@ -59,7 +59,7 @@ function ProjectDOM() {
         const li = document.createElement('li');
         const deleteBtn = document.createElement('button');
         const img = document.createElement('img');
-        img['src'] = "../dist/delete.png";
+        img['src'] = "./delete.png";
         img.setAttribute('remove-btn-index', projectsList.length - 1);
         deleteBtn.setAttribute('id', 'project-delete-btn');
         deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
