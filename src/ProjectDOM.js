@@ -32,7 +32,7 @@ function ProjectDOM() {
             li.setAttribute('data-index', i);
             const deleteBtn = document.createElement('button');
             const img = document.createElement('img');
-            img['src'] = "../dist/delete.png";
+            img['src'] = "./delete.png";
             img.setAttribute('remove-btn-index', projectsList.length - 1);
             deleteBtn.setAttribute('id', 'project-delete-btn');
             deleteBtn.setAttribute('data-btn-index', i);
@@ -59,7 +59,7 @@ function ProjectDOM() {
         const li = document.createElement('li');
         const deleteBtn = document.createElement('button');
         const img = document.createElement('img');
-        img['src'] = "./dist/delete.png";
+        img['src'] = "./delete.png";
         img.setAttribute('remove-btn-index', projectsList.length - 1);
         deleteBtn.setAttribute('id', 'project-delete-btn');
         deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
@@ -133,13 +133,13 @@ function ProjectDOM() {
             const icon = document.querySelector("#more>img");
             // console.log(lis);
             if (lis.length > 0) {
-                icon['src'] = "../dist/up-chevron.png";
+                icon['src'] = "./up-chevron.png";
                 lis.forEach((li) => {
                     ulProjects.removeChild(li);
                 });
             }
             else {
-                icon['src'] = "../dist/down-chevron.png";
+                icon['src'] = "./down-chevron.png";
                 // console.log(icon);
                 renderProjects(projectsList);
                 // console.log("hello");
