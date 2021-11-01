@@ -1,32 +1,37 @@
-function TODO(Title, Description, DueDate, Priority) {
-    function getTitle() {
-        return Title
-    }
-    function getDescription() {
-        return Description
-    }
-    function getDueDate() {
-        return DueDate
-    }
-    function getPriority(){
-        return Priority;
+class TODO{
+    constructor(title, description, dueDate, priority){
+        this.title = title
+        this.description = description
+        this.dueDate = dueDate
+        this.priority = priority
     }
 
-    function setTitle(newTitle) {
-        Title = newTitle
+    getTitle() {
+        return this.title;
     }
-    function setDescription(newDescription) {
-        Description = newDescription
+    getDescription() {
+        return this.description;
     }
-    function setDueDate(newDueDate) {
-        DueDate = newDueDate
+    getDueDate() {
+        return this.dueDate;
+    }
+    getPriority(){
+        return this.priority;
+    }
+
+    setTitle(title) {
+        this.title = title
+    }
+    setDescription(description) {
+        this.description = description
+    }
+    setDueDate(dueDate) {
+        this.dueDate = dueDate
     }
     
-    function setPriority(newPriority){
-        Priority = newPriority;
+    setPriority(priority){
+        this.priority = priority;
     }
-
-    return { getTitle, getDescription, getDueDate, getPriority, setTitle, setDescription, setDueDate, setPriority }
 }
 
 export default TODO;

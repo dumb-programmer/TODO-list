@@ -1,19 +1,23 @@
-function Project(Name) {
-    let TODOs = []
-
-    function getName() {
-        return Name
+class Project{
+    constructor(name){
+        this.name = name;
+        this.TODOs = []
     }
 
-    function getTODOs() {
-        return TODOs
+    getName() {
+        return this.name
     }
 
-    function addTODO(todo) {
-        TODOs.push(todo)
+    getTODOs() {
+        return this.TODOs
     }
 
-    return { getName, getTODOs, addTODO }
+    addTODO(todo) {
+        this.TODOs.push(todo)
+    }
+
+    removeTODO(index){
+        this.TODOs.splice(index, index);
+    }
 }
-
 export default Project;
