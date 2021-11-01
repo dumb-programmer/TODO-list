@@ -3,31 +3,62 @@ import TODO from './TODO.js';
 import Project from './Project.js';
 import DOM from './DOM.js';
 
-// let todo1 = TODO('Test1', 'lorem epsum', '21/09/2021');
-// let todo2 = TODO('Test2', 'lorem epsum', '21/10/2021');
-// let todo3 = TODO('Test3', 'lorem epsum', '21/11/2021');
 
-// let project1 = Project('Test Project');
-// project1.addTODO(todo1);
-// project1.addTODO(todo2);
-// project1.addTODO(todo3);
+let projectsList = [];
+if (JSON.parse(localStorage.getItem('projectsList')) == null) {
 
-let projectsList = [Project("Default")];
+    projectsList.push(new Project("Default"));
 
-// let myStorage = localStorage;
-// myStorage.setItem('projectsList', JSON.stringify([new Project('Default')]));
+    projectsList[0].addTODO(new TODO('TEST1', 'lorem epsum', '10/9/2021'));
+    projectsList[0].addTODO(new TODO('TEST2', 'lorem e1312', '14/9/2021'));
+    projectsList[0].addTODO(new TODO('TEST3', 'lorem 76576', '16/9/2021'));
 
-// let projectsList = JSON.parse(myStorage.getItem('projectsList'));
-// console.log(projectsList[0]);
+    localStorage.setItem('projectsList', JSON.stringify(projectsList));
 
-projectsList[0].addTODO(TODO('TEST1', 'lorem epsum', '10/9/2021'))
-projectsList[0].addTODO(TODO('TEST2', 'lorem e1312', '14/9/2021'))
-projectsList[0].addTODO(TODO('TEST3', 'lorem 76576', '16/9/2021'))
+}
+
+else{
+    projectsList = getProjectsList();
+}
+
+function getProjectsList() {
+    // Adds the methods back to projects
+    let temp = []
+    let projectsList = JSON.parse(localStorage.getItem('projectsList'))
+    for (let i = 0; i < projectsList.length; ++i) {
+        if(projectsList[i] != null){
+            Object.setPrototypeOf(projectsList[i], Project.prototype);
+            for (let j = 0; j < projectsList[i].TODOs.length; ++j) {
+                Object.setPrototypeOf(projectsList[i].TODOs[j], TODO.prototype);
+            }
+            temp.push(projectsList[i])
+        }
+    }
+    return temp;
+}
+
+function updateProjectsList() {
+    projectsList = getProjectsList();
+}
+
+function addProject(project) {
+    projectsList.push(project);
+    localStorage.setItem('projectsList', JSON.stringify(projectsList));
+}
+
+function removeProject(index){
+    projectsList[index] = null
+    localStorage.setItem('projectsList', JSON.stringify(projectsList));
+    updateProjectsList();
+}
+
+function addTODO(index, TODO){
+    projectsList[index].addTODO(TODO);
+    localStorage.setItem('projectsList', JSON.stringify(projectsList));
+}
 
 let dom = DOM();
 
-// dom.renderProjects(projectsList);
-
 dom.render();
 
-export { projectsList };
+export { projectsList, addProject, getProjectsList, removeProject, addTODO };

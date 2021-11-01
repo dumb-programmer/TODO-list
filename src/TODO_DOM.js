@@ -1,28 +1,47 @@
-import { projectsList } from './index.js';
+import { addTODO, projectsList } from './index.js';
 import { selectedProject } from './ProjectDOM.js';
 import TODO from './TODO.js';
 
 function TODO_DOM() {
     const content = document.querySelector("#content");
+    let i = 0;
 
     function renderTODOs(project) {
         clearScreen();
-        const todos = project.getAttribute('id') == 'default' ? projectsList[0].getTODOs() : projectsList[project.getAttribute('data-index')].getTODOs();
-        // console.log(todos);
-        // console.log(projectsList);
+        const todos = project.getAttribute('id') == 'default' ? projectsList[0].getTODOs() : projectsList[new Number(project.getAttribute('data-index'))].getTODOs();
         todos.forEach((todo) => {
-            appendTODO(todo);
+            appendTODO(todo, i);
         })
     }
 
-    function appendTODO(todo) {
+    function appendTODO(todo, index) {
         const lis = document.querySelectorAll("#content>li");
         const last_li = lis[lis.length - 1];
+        const Editbutton = document.createElement('button');
+        Editbutton.style.color = 'black';
+        Editbutton.style.backgroundColor = '#1f1f1f';
+        Editbutton.style.border = 'none';
+        const img = document.createElement('img');
+        img['src'] = './draw.png';
+        Editbutton.setAttribute('id', 'editTODO');
+        Editbutton.appendChild(img);
 
+        Editbutton.addEventListener('click', (event) => {
+            const index = event.target.getAttribute('data-index');
+            let projectIndex = selectedProject.getAttribute('data-index');
+            let project = projectsList[0]
+            if(projectIndex != null){
+                project = projectsList[new Number(projectIndex)]
+            }
+            project.removeTODO(index);
+        })
         const li = document.createElement('li');
+        li.setAttribute('data-index', index)
         li.textContent = todo.getTitle();
+        li.append(Editbutton);
 
         last_li.parentNode.insertBefore(li, last_li);
+        i++;
     }
 
     function addEventListeners() {
@@ -64,22 +83,14 @@ function TODO_DOM() {
             const Description = document.querySelector("#description").value;
             const Due = document.querySelector("#due").value;
             const Priority = document.querySelector("#priority").value;
-            // const project_dom = ProjectDOM();
-
             const todo = new TODO(Title, Description, Due, Priority);
             let index = 0;
             if (selectedProject.getAttribute('data-index')) {
                 index = selectedProject.getAttribute('data-index');
-                // console.log(index);
             }
-            // console.log(index);
-            // console.log(selectedProject);
-            projectsList[index].addTODO(todo);
-
-            // console.log(projectsList[index].getTODOs()[0].getTitle());
-            // console.log(Title, Description, Due, Priority);
+            addTODO(index, todo);
             removeForm();
-            appendTODO(todo);
+            appendTODO(todo, i);
         })
 
         const cancelBtn = document.createElement('button');
@@ -99,8 +110,8 @@ function TODO_DOM() {
         formContainer.appendChild(form);
 
         content.appendChild(formContainer);
+        
     }
-
     function removeForm() {
         const formContainer = document.querySelector(".form-container");
         content.removeChild(formContainer);
@@ -109,7 +120,6 @@ function TODO_DOM() {
     function clearScreen() {
         const lis = document.querySelectorAll("#content>li");
         let i = 0;
-        // let id = lis[i].getAttribute('id');
         while (i < lis.length - 1) {
             content.removeChild(lis[i]);
             i++;
