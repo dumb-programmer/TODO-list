@@ -111,6 +111,10 @@ button {
     background-color: rgb(27, 147, 202);
 }
 
+#content>li{
+    list-style: none;
+}
+
 footer {
     grid-area: foot;
     text-align: center;
@@ -176,8 +180,6 @@ button {
 }
 
 #cancel-todo {
-    /* background-color: #ffffff; */
-    /* border: 2px solid #eee; */
     border: none;
     color: black;
 }
