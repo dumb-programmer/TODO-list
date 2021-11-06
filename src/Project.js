@@ -17,6 +17,9 @@ class Project{
     }
 
     removeTODO(index){
+        if(index == 0 && this.TODOs.length == 1){
+            this.TODOs = []
+        }
         this.TODOs.splice(index, index);
     }
 }

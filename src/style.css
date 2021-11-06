@@ -37,6 +37,11 @@ aside>ul>#default {
     cursor: pointer;
 }
 
+#default>img{
+    position: relative;
+    top: 3px;
+}
+
 #projects>li {
     margin-left: 50px;
     list-style: circle;
@@ -48,8 +53,14 @@ aside>ul>#default {
 }
 
 #projects>#more {
-    background-color: #282828;
+    display: inline-block;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
     border: none;
+    margin-right: 2px;
+    position: relative;
+    top: 3px;
 }
 
 #projects>#more {
@@ -57,12 +68,13 @@ aside>ul>#default {
 }
 
 #projects>#new-project {
-    background-color: #282828;
-    border: none;
-}
-
-button {
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
     cursor: pointer;
+    position: relative;
+    top: 3px;
 }
 
 #project-input>button, #project-input>input {
@@ -75,9 +87,13 @@ button {
     border: none;
 }
 
-#remove-project-btn {
-    background-color: #474646;
-    border: none;
+#project-delete-btn{
+    display: inline-block;
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+    position: relative;
+    top: 3px;
 }
 
 #content {
@@ -96,15 +112,12 @@ button {
     padding: 10px;
 }
 
-#content>li>#add {
-    color: black;
-    font-size: 30px;
+#content>li>#add-todo {
     border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    border: none;
-    background: none;
-    padding: 0;
+    height: 20px;
+    width: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
 }
 
 #content>li>#add:hover {
@@ -182,4 +195,14 @@ button {
 #cancel-todo {
     border: none;
     color: black;
+}
+
+#todo-remove-btn{
+    float: right;
+    height: 19px;
+    width: 22px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: relative;
+    top: 13px;
 }

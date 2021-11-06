@@ -1,6 +1,11 @@
 import { projectsList, addProject, getProjectsList, removeProject } from './index.js';
 import Project from './Project.js';
 import TODO_DOM from './TODO_DOM.js';
+import upChevronIcon from './chevron-up.svg';
+import downChevronIcon from './chevron-down.svg';
+import plusIcon from './plus.svg';
+import trashIcon from './trash-2.svg';
+import inboxIcon from './inbox.svg';
 
 let selectedProject = document.querySelector("#default");
 
@@ -25,16 +30,11 @@ function ProjectDOM() {
             if(projectsList[i] != null){
                 const li = document.createElement('li');
                 li.setAttribute('data-index', i);
-                const deleteBtn = document.createElement('button');
-                const img = document.createElement('img');
-                img['src'] = "./delete.png";
-                img.setAttribute('remove-btn-index', projectsList.length - 1);
+                const deleteBtn = document.createElement('div');
+                deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
                 deleteBtn.setAttribute('id', 'project-delete-btn');
                 deleteBtn.setAttribute('data-btn-index', i);
-                deleteBtn.style.border = "none";
-                deleteBtn.style.backgroundColor = "#282828";
-                deleteBtn.append(img);
-    
+                deleteBtn.style.background = `url(${trashIcon})`;
     
                 deleteBtn.addEventListener('click', (event) => {
                     let index = event.target.getAttribute("remove-btn-index");
@@ -54,21 +54,15 @@ function ProjectDOM() {
 
     function appendProject(projectsList) {
         const li = document.createElement('li');
-        const deleteBtn = document.createElement('button');
-        const img = document.createElement('img');
-        img['src'] = "./delete.png";
-        img.setAttribute('remove-btn-index', projectsList.length - 1);
+        const deleteBtn = document.createElement('div');
+        deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
         deleteBtn.setAttribute('id', 'project-delete-btn');
         deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
-        deleteBtn.style.border = "none";
-        deleteBtn.style.backgroundColor = "#282828";
-        deleteBtn.append(img);
-
+        deleteBtn.style.background = `url(${trashIcon})`;
 
         deleteBtn.addEventListener('click', (event) => {
             let index = event.target.getAttribute("remove-btn-index");
             projectsList[index] = null;
-            console.log(projectsList);
             clearProjectsList();
             renderProjects(projectsList);
             removeProject();
@@ -123,15 +117,15 @@ function ProjectDOM() {
 
         projectMoreBtn.addEventListener('click', () => {
             const lis = document.querySelectorAll("#projects>li");
-            const icon = document.querySelector("#more>img");
+            const icon = document.querySelector("#more");
             if (lis.length > 0) {
-                icon['src'] = "./up-chevron.png";
+                icon.style.background = `url(${upChevronIcon})`;
                 lis.forEach((li) => {
                     ulProjects.removeChild(li);
                 });
             }
             else {
-                icon['src'] = "./down-chevron.png";
+                icon.style.background = `url(${downChevronIcon})`;
                 renderProjects(projectsList);
             }
         })
@@ -151,6 +145,13 @@ function ProjectDOM() {
         });
     }
     function render() {
+        const chevronIcon = document.querySelector("#more");
+        chevronIcon.style.background = `url(${downChevronIcon})`;
+        const addProject = document.querySelector("#new-project");
+        addProject.style.background = `url(${plusIcon})`;
+        const defaultImg = document.querySelector("#default>img");
+        defaultImg['src'] = inboxIcon;
+
         renderProjects(getProjectsList());
         addEventListeners();
     }
