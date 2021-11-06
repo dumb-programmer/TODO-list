@@ -1,47 +1,61 @@
-import { addTODO, projectsList } from './index.js';
+import { addProject, addTODO, projectsList, removeTODO } from './index.js';
 import { selectedProject } from './ProjectDOM.js';
 import TODO from './TODO.js';
+import removeIcon from './delete.svg';
+import editIcon from './edit-2.svg';
+import plusIcon from './plus.svg';
 
 function TODO_DOM() {
     const content = document.querySelector("#content");
-    let i = 0;
 
     function renderTODOs(project) {
+        let i = 0;
         clearScreen();
-        const todos = project.getAttribute('id') == 'default' ? projectsList[0].getTODOs() : projectsList[new Number(project.getAttribute('data-index'))].getTODOs();
+        const todos = project.getAttribute('data-index') == null ? projectsList[0].getTODOs() : projectsList[+project.getAttribute('data-index')].getTODOs();
         todos.forEach((todo) => {
             appendTODO(todo, i);
+            i += 1;
         })
     }
 
     function appendTODO(todo, index) {
         const lis = document.querySelectorAll("#content>li");
         const last_li = lis[lis.length - 1];
-        const Editbutton = document.createElement('button');
-        Editbutton.style.color = 'black';
-        Editbutton.style.backgroundColor = '#1f1f1f';
-        Editbutton.style.border = 'none';
-        const img = document.createElement('img');
-        img['src'] = './draw.png';
-        Editbutton.setAttribute('id', 'editTODO');
-        Editbutton.appendChild(img);
 
-        Editbutton.addEventListener('click', (event) => {
-            const index = event.target.getAttribute('data-index');
-            let projectIndex = selectedProject.getAttribute('data-index');
-            let project = projectsList[0]
-            if(projectIndex != null){
-                project = projectsList[new Number(projectIndex)]
-            }
-            project.removeTODO(index);
+        const removeBtn = document.createElement('div');
+        removeBtn.style.backgroundImage = `url(${removeIcon})`;
+        removeBtn.setAttribute('id', 'todo-remove-btn');
+
+        const editBtn = document.createElement('div');
+        editBtn.style.backgroundImage = `url(${editIcon})`;
+        editBtn.style.backgroundRepeat = "no-repeat";
+        editBtn.style.height = "19px";
+        editBtn.style.width = "19px";
+        editBtn.style.cursor = "pointer";
+        editBtn.style.position = "relative";
+        editBtn.style.top = "13px";
+        editBtn.style.marginRight = "40px";
+
+        const iconContainer = document.createElement('div');
+        iconContainer.style.display = "inline-block";
+        iconContainer.appendChild(removeBtn);
+        iconContainer.append(editBtn);
+
+        removeBtn.addEventListener('click', (event) => {
+            const TODOindex = event.target.parentNode.parentNode.getAttribute('data-index');
+            removeTODO(+TODOindex, +selectedProject.getAttribute('data-index'));
+            renderTODOs(selectedProject);
         })
+
         const li = document.createElement('li');
         li.setAttribute('data-index', index)
         li.textContent = todo.getTitle();
-        li.append(Editbutton);
+        li.style.display = 'flex';
+        li.style.flexDirection = "row";
+        li.style.justifyContent = "space-between";
+        li.appendChild(iconContainer);
 
         last_li.parentNode.insertBefore(li, last_li);
-        i++;
     }
 
     function addEventListeners() {
@@ -78,7 +92,8 @@ function TODO_DOM() {
         okBtn.textContent = "OK";
         okBtn.setAttribute('id', 'add-todo');
 
-        okBtn.addEventListener('click', () => {
+        okBtn.addEventListener('click', (event) => {
+            event.preventDefault();
             const Title = document.querySelector("#title").value;
             const Description = document.querySelector("#description").value;
             const Due = document.querySelector("#due").value;
@@ -90,6 +105,8 @@ function TODO_DOM() {
             }
             addTODO(index, todo);
             removeForm();
+            let projectIndex = selectedProject.getAttribute('data-index') == null ? 0 : selectedProject.getAttribute('data-index');
+            let i = projectsList[projectIndex].TODOs.length;
             appendTODO(todo, i);
         })
 
@@ -110,7 +127,7 @@ function TODO_DOM() {
         formContainer.appendChild(form);
 
         content.appendChild(formContainer);
-        
+
     }
     function removeForm() {
         const formContainer = document.querySelector(".form-container");
@@ -127,6 +144,8 @@ function TODO_DOM() {
     }
 
     function render() {
+        const addTODO = document.querySelector("#add-todo");
+        addTODO.style.background = `url(${plusIcon})`;
         addEventListeners();
         renderTODOs(selectedProject);
     }

@@ -3,8 +3,8 @@ import TODO from './TODO.js';
 import Project from './Project.js';
 import DOM from './DOM.js';
 
-
 let projectsList = [];
+
 if (JSON.parse(localStorage.getItem('projectsList')) == null) {
 
     projectsList.push(new Project("Default"));
@@ -17,7 +17,7 @@ if (JSON.parse(localStorage.getItem('projectsList')) == null) {
 
 }
 
-else{
+else {
     projectsList = getProjectsList();
 }
 
@@ -26,7 +26,7 @@ function getProjectsList() {
     let temp = []
     let projectsList = JSON.parse(localStorage.getItem('projectsList'))
     for (let i = 0; i < projectsList.length; ++i) {
-        if(projectsList[i] != null){
+        if (projectsList[i] != null) {
             Object.setPrototypeOf(projectsList[i], Project.prototype);
             for (let j = 0; j < projectsList[i].TODOs.length; ++j) {
                 Object.setPrototypeOf(projectsList[i].TODOs[j], TODO.prototype);
@@ -37,28 +37,36 @@ function getProjectsList() {
     return temp;
 }
 
-function updateProjectsList() {
-    projectsList = getProjectsList();
+function updateLocalStorage() {
+    localStorage.setItem('projectsList', JSON.stringify(projectsList));
 }
 
 function addProject(project) {
     projectsList.push(project);
-    localStorage.setItem('projectsList', JSON.stringify(projectsList));
+    updateLocalStorage();
 }
 
-function removeProject(index){
+function removeProject(index) {
     projectsList[index] = null
-    localStorage.setItem('projectsList', JSON.stringify(projectsList));
-    updateProjectsList();
+    updateLocalStorage();
 }
 
-function addTODO(index, TODO){
+function addTODO(index, TODO) {
     projectsList[index].addTODO(TODO);
-    localStorage.setItem('projectsList', JSON.stringify(projectsList));
+    updateLocalStorage();
+}
+
+function removeTODO(TODOindex, projectIndex) {
+    if (projectIndex == null) {
+        projectIndex = 0;
+    }
+    projectsList[projectIndex].removeTODO(TODOindex);
+    console.log(projectsList[projectIndex].getTODOs());
+    updateLocalStorage();
 }
 
 let dom = DOM();
 
 dom.render();
 
-export { projectsList, addProject, getProjectsList, removeProject, addTODO };
+export { projectsList, addProject, getProjectsList, removeProject, addTODO, removeTODO };
