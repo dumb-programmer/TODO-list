@@ -1,4 +1,4 @@
-import { addProject, addTODO, projectsList, removeTODO } from './index.js';
+import { addTODO, projectsList, removeTODO, replaceTODO } from './index.js';
 import { selectedProject } from './ProjectDOM.js';
 import TODO from './TODO.js';
 import removeIcon from './delete.svg';
@@ -47,6 +47,11 @@ function TODO_DOM() {
             renderTODOs(selectedProject);
         })
 
+        editBtn.addEventListener('click', (event) => {
+            console.log("HELLO", event.target.parentNode.parentNode.getAttribute('data-index'));
+            renderEditForm(event.target.parentNode.parentNode.getAttribute('data-index'));
+        })
+
         const li = document.createElement('li');
         li.setAttribute('data-index', index)
         li.textContent = todo.getTitle();
@@ -67,6 +72,8 @@ function TODO_DOM() {
     }
 
     function renderForm() {
+        const addTODOBtn = document.querySelector("#add-todo");
+        addTODOBtn.style.display = "None";
         const formContainer = document.createElement("div");
         formContainer.setAttribute('class', 'form-container');
         const container = document.createElement("div");
@@ -93,6 +100,7 @@ function TODO_DOM() {
         okBtn.setAttribute('id', 'add-todo');
 
         okBtn.addEventListener('click', (event) => {
+            addTODOBtn.style.display = "";
             event.preventDefault();
             const Title = document.querySelector("#title").value;
             const Description = document.querySelector("#description").value;
@@ -106,7 +114,7 @@ function TODO_DOM() {
             addTODO(index, todo);
             removeForm();
             let projectIndex = selectedProject.getAttribute('data-index') == null ? 0 : selectedProject.getAttribute('data-index');
-            let i = projectsList[projectIndex].TODOs.length;
+            let i = projectsList[projectIndex].TODOs.length - 1;
             appendTODO(todo, i);
         })
 
@@ -115,6 +123,7 @@ function TODO_DOM() {
         cancelBtn.setAttribute('id', 'cancel-todo');
 
         cancelBtn.addEventListener('click', (event) => {
+            addTODOBtn.style.display = "";
             event.preventDefault();
             removeForm();
         })
@@ -129,6 +138,85 @@ function TODO_DOM() {
         content.appendChild(formContainer);
 
     }
+
+    function renderEditForm(TODOindex) {
+        const projectIndex = selectedProject.getAttribute('data-index') == null ? 0 : selectedProject.getAttribute('data-index');
+        const project = projectsList[projectIndex];
+        console.log(project);
+        const currentTODO = project.getTODOs()[+TODOindex];
+        console.log(currentTODO);
+
+        const title = currentTODO.getTitle();
+        const description = currentTODO.getDescription();
+        const dueDate = currentTODO.getDueDate();
+        const priority = currentTODO.getPriority();
+
+
+        const addTODOBtn = document.querySelector("#add-todo");
+        addTODOBtn.style.display = "None";
+        const formContainer = document.createElement("div");
+        formContainer.setAttribute('class', 'form-container');
+        const container = document.createElement("div");
+        container.setAttribute('class', 'container');
+        const form = document.createElement('form');
+        const flexContainer = document.createElement('div');
+        flexContainer.setAttribute('class', 'flex-container');
+        const first = document.createElement('div');
+        first.setAttribute('class', 'first');
+        const second = document.createElement('div');
+        second.setAttribute('class', 'second');
+
+        first.innerHTML = `<label for= "title" > Title : <br><input type="text" id="title" value="${title}"></label><br> <label for="description">Description : <br><textarea id="description">${description}</textarea></label><br></br>`
+        second.innerHTML = `<label for="due">Due Date : <br><input type="date" id="due" value=${dueDate}></label><br> <label for= "priority" > Priority: <br> <select name="priority" id="priority" selected=${priority}> <option value="high">High</option> <option value="medium">Medium</option> <option value="low">Low</option> </select> </label>`
+
+        flexContainer.appendChild(first);
+        flexContainer.appendChild(second);
+
+        container.append(flexContainer);
+
+
+        const okBtn = document.createElement('button');
+        okBtn.textContent = "OK";
+        okBtn.setAttribute('id', 'add-todo');
+
+        okBtn.addEventListener('click', (event) => {
+            addTODOBtn.style.display = "";
+            event.preventDefault();
+            const Title = document.querySelector("#title").value;
+            const Description = document.querySelector("#description").value;
+            const Due = document.querySelector("#due").value;
+            const Priority = document.querySelector("#priority").value;
+            const todo = new TODO(Title, Description, Due, Priority);
+            let index = 0;
+            if (selectedProject.getAttribute('data-index')) {
+                index = selectedProject.getAttribute('data-index');
+            }
+            replaceTODO(index, TODOindex, todo);
+            removeForm();
+            renderTODOs(selectedProject);
+        })
+
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = "Cancel";
+        cancelBtn.setAttribute('id', 'cancel-todo');
+
+        cancelBtn.addEventListener('click', (event) => {
+            addTODOBtn.style.display = "";
+            event.preventDefault();
+            removeForm();
+        })
+
+        container.appendChild(okBtn);
+        container.appendChild(cancelBtn);
+
+        form.appendChild(container);
+
+        formContainer.appendChild(form);
+
+        content.appendChild(formContainer);
+
+    }
+
     function removeForm() {
         const formContainer = document.querySelector(".form-container");
         content.removeChild(formContainer);

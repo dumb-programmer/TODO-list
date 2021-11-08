@@ -56,12 +56,16 @@ function addTODO(index, TODO) {
     updateLocalStorage();
 }
 
+function replaceTODO(projectIndex, TODOIndex, TODO) {
+    projectsList[projectIndex].replaceTODO(TODOIndex, TODO);
+    updateLocalStorage();
+}
+
 function removeTODO(TODOindex, projectIndex) {
     if (projectIndex == null) {
         projectIndex = 0;
     }
     projectsList[projectIndex].removeTODO(TODOindex);
-    console.log(projectsList[projectIndex].getTODOs());
     updateLocalStorage();
 }
 
@@ -69,4 +73,4 @@ let dom = DOM();
 
 dom.render();
 
-export { projectsList, addProject, getProjectsList, removeProject, addTODO, removeTODO };
+export { projectsList, addProject, getProjectsList, removeProject, addTODO, removeTODO, replaceTODO };

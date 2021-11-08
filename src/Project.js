@@ -1,5 +1,5 @@
-class Project{
-    constructor(name){
+class Project {
+    constructor(name) {
         this.name = name;
         this.TODOs = []
     }
@@ -16,11 +16,15 @@ class Project{
         this.TODOs.push(todo)
     }
 
-    removeTODO(index){
-        if(index == 0 && this.TODOs.length == 1){
+    replaceTODO(index, todo) {
+        this.TODOs[index] = todo
+    }
+
+    removeTODO(index) {
+        if (index == 0 && this.TODOs.length == 1) {
             this.TODOs = []
         }
-        this.TODOs.splice(index, index);
+        this.TODOs.splice(index, 1);
     }
 }
 export default Project;
