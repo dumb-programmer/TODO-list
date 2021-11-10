@@ -48,7 +48,6 @@ function TODO_DOM() {
         })
 
         editBtn.addEventListener('click', (event) => {
-            console.log("HELLO", event.target.parentNode.parentNode.getAttribute('data-index'));
             renderEditForm(event.target.parentNode.parentNode.getAttribute('data-index'));
         })
 
@@ -142,9 +141,7 @@ function TODO_DOM() {
     function renderEditForm(TODOindex) {
         const projectIndex = selectedProject.getAttribute('data-index') == null ? 0 : selectedProject.getAttribute('data-index');
         const project = projectsList[projectIndex];
-        console.log(project);
         const currentTODO = project.getTODOs()[+TODOindex];
-        console.log(currentTODO);
 
         const title = currentTODO.getTitle();
         const description = currentTODO.getDescription();
@@ -168,6 +165,15 @@ function TODO_DOM() {
 
         first.innerHTML = `<label for= "title" > Title : <br><input type="text" id="title" value="${title}"></label><br> <label for="description">Description : <br><textarea id="description">${description}</textarea></label><br></br>`
         second.innerHTML = `<label for="due">Due Date : <br><input type="date" id="due" value=${dueDate}></label><br> <label for= "priority" > Priority: <br> <select name="priority" id="priority" selected=${priority}> <option value="high">High</option> <option value="medium">Medium</option> <option value="low">Low</option> </select> </label>`
+
+        const prioritySelect = second.querySelector('label>#priority');
+
+        if (priority == "low") {
+            prioritySelect.selectedIndex = 2;
+        }
+        else if (priority == "medium") {
+            prioritySelect.selectedIndex = 1;
+        }
 
         flexContainer.appendChild(first);
         flexContainer.appendChild(second);

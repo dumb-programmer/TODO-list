@@ -37,7 +37,7 @@ aside>ul>#default {
     cursor: pointer;
 }
 
-#default>img{
+#default>img {
     position: relative;
     top: 3px;
 }
@@ -87,7 +87,7 @@ aside>ul>#default {
     border: none;
 }
 
-#project-delete-btn{
+#project-delete-btn {
     display: inline-block;
     background-repeat: no-repeat;
     height: 20px;
@@ -124,7 +124,7 @@ aside>ul>#default {
     background-color: rgb(27, 147, 202);
 }
 
-#content>li{
+#content>li {
     list-style: none;
 }
 
@@ -152,7 +152,7 @@ form {
     border: 2px solid black;
 }
 
-input[type="text"], input[type="date"], textarea, select{
+input[type="text"], input[type="date"], textarea, select {
     color: black;
 }
 
@@ -197,7 +197,7 @@ button {
     color: black;
 }
 
-#todo-remove-btn{
+#todo-remove-btn {
     float: right;
     height: 19px;
     width: 22px;

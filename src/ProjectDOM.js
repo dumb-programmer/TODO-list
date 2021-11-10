@@ -1,4 +1,4 @@
-import { projectsList, addProject, getProjectsList, removeProject } from './index.js';
+import { projectsList, addProject, getProjectsList, removeProject, replaceProject } from './index.js';
 import Project from './Project.js';
 import TODO_DOM from './TODO_DOM.js';
 import upChevronIcon from './chevron-up.svg';
@@ -6,6 +6,7 @@ import downChevronIcon from './chevron-down.svg';
 import plusIcon from './plus.svg';
 import trashIcon from './trash-2.svg';
 import inboxIcon from './inbox.svg';
+import editIcon from './edit-2.svg';
 
 let selectedProject = document.querySelector("#default");
 
@@ -13,66 +14,96 @@ function ProjectDOM() {
     const ulProjects = document.querySelector("#projects");
     const todo_dom = TODO_DOM();
 
-    function addEventListenersToProjects() {
-        const lis = document.querySelectorAll("#projects>li");
-        lis.forEach((li) => {
-            li.addEventListener('click', (event) => {
-                selectedProject.style.backgroundColor = "#282828";
-                li.style.backgroundColor = "#363636";
-                selectedProject = event.target;
-                todo_dom.renderTODOs(selectedProject);
-            })
-        })
+    function addEventListenersToProject(li) {
+        li.addEventListener('click', () => {
+            selectedProject.style.backgroundColor = "#282828";
+            li.style.backgroundColor = "#363636";
+            selectedProject = li;
+            todo_dom.renderTODOs(selectedProject);
+        });
     }
 
     function renderProjects(projectsList) {
         for (let i = 1; i < projectsList.length; i++) {
-            if(projectsList[i] != null){
-                const li = document.createElement('li');
-                li.setAttribute('data-index', i);
-                const deleteBtn = document.createElement('div');
-                deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
-                deleteBtn.setAttribute('id', 'project-delete-btn');
-                deleteBtn.setAttribute('data-btn-index', i);
-                deleteBtn.style.background = `url(${trashIcon})`;
-    
-                deleteBtn.addEventListener('click', (event) => {
-                    let index = event.target.getAttribute("remove-btn-index");
-                    projectsList[index] = null;
-                    clearProjectsList();
-                    removeProject(index); 
-                    renderProjects(projectsList);
-                })
-    
-                li.textContent = projectsList[i].getName();
-                li.append(deleteBtn);
-                ulProjects.append(li);
+            if (projectsList[i] != null) {
+                appendProject(projectsList, i);
             }
         }
-        addEventListenersToProjects();
     }
 
-    function appendProject(projectsList) {
+    function appendProject(projectsList, index) {
         const li = document.createElement('li');
         const deleteBtn = document.createElement('div');
-        deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
+        deleteBtn.setAttribute('remove-btn-index', index);
         deleteBtn.setAttribute('id', 'project-delete-btn');
-        deleteBtn.setAttribute('remove-btn-index', projectsList.length - 1);
         deleteBtn.style.background = `url(${trashIcon})`;
+        deleteBtn.style.marginLeft = "5px";
+        const editBtn = document.createElement('div');
+        editBtn.style.display = "inline-block";
+        editBtn.style.position = "relative";
+        editBtn.style.top = "3px";
+        editBtn.style.marginLeft = "5px";
+        editBtn.style.background = `url(${editIcon})`;
+        editBtn.style.backgroundRepeat = 'no-repeat';
+        editBtn.style.height = '19px';
+        editBtn.style.width = '19px';
+
+        editBtn.addEventListener('click', (event) => {
+            const current_li = event.target.parentNode;
+            current_li.innerHTML = "";
+
+            const input = document.createElement('input');
+            input['value'] = project.getName();
+
+            const addBtn = document.createElement('button');
+            addBtn.setAttribute("id", "add-project-btn");
+            addBtn.textContent = "Add"
+
+            addBtn.addEventListener('click', () => {
+                const name = input.value;
+                const new_project = new Project(name);
+
+                replaceProject(index, new_project);
+
+                current_li.innerHTML = "";
+                current_li.textContent = new_project.getName();
+                current_li.append(editBtn);
+                current_li.append(deleteBtn);
+                projectsList = getProjectsList();
+                project = projectsList[index];
+            })
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.setAttribute("id", "cancel-project-btn");
+            cancelBtn.textContent = "Cancel";
+
+            cancelBtn.addEventListener('click', () => {
+                current_li.textContent = project.getName();
+                current_li.append(editBtn);
+                current_li.append(deleteBtn);
+            });
+
+            current_li.setAttribute('id', 'project-input');
+            current_li.append(input);
+            current_li.append(addBtn);
+            current_li.append(cancelBtn);
+        });
 
         deleteBtn.addEventListener('click', (event) => {
-            let index = event.target.getAttribute("remove-btn-index");
-            projectsList[index] = null;
-            clearProjectsList();
-            renderProjects(projectsList);
-            removeProject();
-        })
+            const projectsListDiv = document.querySelector("#projects");
+            const li = event.target.parentNode;
+            projectsListDiv.removeChild(li);
+            removeProject(index);
+        });
 
-        li.textContent = projectsList[projectsList.length - 1].getName();
-        li.setAttribute('data-index', projectsList.length - 1);
+        let project = projectsList[index];
+
+        li.textContent = project.getName();
+        li.setAttribute('data-index', index);
+        li.append(editBtn);
         li.append(deleteBtn);
         ulProjects.append(li);
-        addEventListenersToProjects();
+        addEventListenersToProject(li);
     }
 
     function addEventListeners() {
@@ -93,9 +124,9 @@ function ProjectDOM() {
                 const project = new Project(name);
                 addProject(project);
 
-                const li = document.querySelector("#project-input");
-                ulProjects.removeChild(li);
-                appendProject(projectsList);
+                const inputLi = document.querySelector("#project-input");
+                ulProjects.removeChild(inputLi);
+                appendProject(projectsList, projectsList.length - 1);
             })
 
             const cancelBtn = document.createElement('button');
@@ -120,9 +151,7 @@ function ProjectDOM() {
             const icon = document.querySelector("#more");
             if (lis.length > 0) {
                 icon.style.background = `url(${upChevronIcon})`;
-                lis.forEach((li) => {
-                    ulProjects.removeChild(li);
-                });
+                clearProjectsList();
             }
             else {
                 icon.style.background = `url(${downChevronIcon})`;
@@ -133,7 +162,7 @@ function ProjectDOM() {
         defaultProject.addEventListener('click', (event) => {
             selectedProject.style.backgroundColor = "#282828";
             defaultProject.style.backgroundColor = "#363636";
-            selectedProject = event.target;
+            selectedProject = event.target; 
             todo_dom.renderTODOs(selectedProject);
         })
     }
@@ -144,6 +173,7 @@ function ProjectDOM() {
             ulProjects.removeChild(li);
         });
     }
+
     function render() {
         const chevronIcon = document.querySelector("#more");
         chevronIcon.style.background = `url(${downChevronIcon})`;

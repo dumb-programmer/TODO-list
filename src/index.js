@@ -51,6 +51,11 @@ function removeProject(index) {
     updateLocalStorage();
 }
 
+function replaceProject(projectIndex, project) {
+    projectsList[projectIndex] = project;
+    updateLocalStorage();
+}
+
 function addTODO(index, TODO) {
     projectsList[index].addTODO(TODO);
     updateLocalStorage();
@@ -73,4 +78,4 @@ let dom = DOM();
 
 dom.render();
 
-export { projectsList, addProject, getProjectsList, removeProject, addTODO, removeTODO, replaceTODO };
+export { projectsList, addProject, getProjectsList, removeProject, replaceProject, addTODO, removeTODO, replaceTODO };
