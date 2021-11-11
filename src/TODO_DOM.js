@@ -11,7 +11,8 @@ function TODO_DOM() {
     function renderTODOs(project) {
         let i = 0;
         clearScreen();
-        const todos = project.getAttribute('data-index') == null ? projectsList[0].getTODOs() : projectsList[+project.getAttribute('data-index')].getTODOs();
+        const projectToRender = project.getAttribute('data-index') == null ? projectsList[0] : projectsList[+project.getAttribute('data-index')];
+        const todos = projectToRender == null ? projectsList[+(project.getAttribute('data-index')) - 1].getTODOs() : projectToRender.getTODOs();
         todos.forEach((todo) => {
             appendTODO(todo, i);
             i += 1;
