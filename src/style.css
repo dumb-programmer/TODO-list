@@ -6,24 +6,21 @@
 
 .grid-container {
     display: grid;
-    grid-template-areas: "head head head head head" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "aside main main main main" "foot foot foot foot foot";
+    grid-template-areas: "head head head head head""aside main main main main""aside main main main main""aside main main main main""aside main main main main""aside main main main main""aside main main main main""foot foot foot foot foot";
     grid-template-columns: repeat(4, 1fr);
     height: 100vh;
     background-color: #1f1f1f;
     grid-template-rows: auto 1fr auto;
-    /* min-height: 100%; */
 }
 
 header {
     grid-area: head;
-    /* border: 2px solid #1c1c1c; */
     padding: 10px;
     background-color: #282828;
 }
 
 aside {
     grid-area: aside;
-    /* border: 2px solid black; */
     padding: 5px;
     background-color: #282828;
 }
@@ -112,6 +109,25 @@ aside>ul>#default {
     padding: 10px;
 }
 
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 55px;
+}
+
+.edit-btn {
+    height: 19px;
+    width: 19px;
+    background-image: url("./edit-2.svg");
+    cursor: pointer;
+}
+
 #content>li>#add-todo {
     border-radius: 50%;
     height: 20px;
@@ -197,12 +213,10 @@ button {
     color: black;
 }
 
-#todo-remove-btn {
-    float: right;
+.todo-remove-btn {
     height: 19px;
     width: 22px;
+    background-image: url("./delete.svg");
     background-repeat: no-repeat;
     cursor: pointer;
-    position: relative;
-    top: 13px;
 }
