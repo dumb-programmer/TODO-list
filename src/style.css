@@ -25,13 +25,14 @@ aside {
     background-color: #282828;
 }
 
-aside>ul {
-    margin-bottom: 50px;
+aside>ul>ul {
+    padding: 10px;
 }
 
-aside>ul>#default {
+#default {
     background-color: #363636;
     cursor: pointer;
+    padding: 10px;
 }
 
 #default>img {
@@ -39,58 +40,37 @@ aside>ul>#default {
     top: 3px;
 }
 
+#project-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 7rem;
+}
+
+.icon {
+    background-repeat: no-repeat;
+    height: 20px;
+    width: 20px;
+}
+
+
 #projects>li {
     margin-left: 50px;
     list-style: circle;
     cursor: pointer;
+    padding: 10px;
+    margin-top: 0.5rem;
 }
 
 #projects>li:hover {
     background-color: #363636;
 }
 
-#projects>#more {
-    display: inline-block;
-    background-repeat: no-repeat;
-    height: 20px;
-    width: 20px;
-    border: none;
-    margin-right: 2px;
-    position: relative;
-    top: 3px;
-}
-
-#projects>#more {
-    cursor: pointer;
-}
-
-#projects>#new-project {
-    background-repeat: no-repeat;
-    height: 20px;
-    width: 20px;
-    display: inline-block;
-    cursor: pointer;
-    position: relative;
-    top: 3px;
-}
-
 #project-input>button, #project-input>input {
     color: black;
 }
 
-#add-project-btn {
-    margin-right: 5px;
-    background-color: rgb(27, 147, 202);
-    border: none;
-}
-
-#project-delete-btn {
-    display: inline-block;
-    background-repeat: no-repeat;
-    height: 20px;
-    width: 20px;
-    position: relative;
-    top: 3px;
+.project-delete-btn {
+    background: url("./trash-2.svg");
 }
 
 #content {
@@ -122,18 +102,7 @@ aside>ul>#default {
 }
 
 .edit-btn {
-    height: 19px;
-    width: 19px;
     background-image: url("./edit-2.svg");
-    cursor: pointer;
-}
-
-#content>li>#add-todo {
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    background-repeat: no-repeat;
-    cursor: pointer;
 }
 
 #content>li>#add:hover {
@@ -173,8 +142,7 @@ input[type="text"], input[type="date"], textarea, select {
 }
 
 button {
-    padding: 3px;
-    margin-right: 10px;
+    all: unset;
     cursor: pointer;
 }
 
@@ -202,21 +170,11 @@ button {
     color: black;
 }
 
-#add-todo {
-    background-color: rgb(27, 147, 202);
-    width: 60px;
-    border: none;
-}
-
 #cancel-todo {
     border: none;
     color: black;
 }
 
 .todo-remove-btn {
-    height: 19px;
-    width: 22px;
     background-image: url("./delete.svg");
-    background-repeat: no-repeat;
-    cursor: pointer;
 }

@@ -27,11 +27,13 @@ function TODO_DOM() {
     const lis = document.querySelectorAll("#content>li");
     const last_li = lis[lis.length - 1];
 
-    const removeBtn = document.createElement("div");
+    const removeBtn = document.createElement("button");
     removeBtn.classList.add("todo-remove-btn");
+    removeBtn.classList.add("icon");
 
-    const editBtn = document.createElement("div");
+    const editBtn = document.createElement("button");
     editBtn.classList.add("edit-btn");
+    editBtn.classList.add("icon");
 
     const iconContainer = document.createElement("div");
     iconContainer.classList.add("icons-container");
