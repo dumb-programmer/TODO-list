@@ -43,7 +43,7 @@ function addProject(project) {
 }
 
 function removeProject(index) {
-  projectsList[index] = null;
+  projectsList.splice(index, 1);
   updateLocalStorage();
 }
 
@@ -62,10 +62,7 @@ function replaceTODO(projectIndex, TODOIndex, TODO) {
   updateLocalStorage();
 }
 
-function removeTODO(TODOindex, projectIndex) {
-  if (projectIndex == null) {
-    projectIndex = 0;
-  }
+function removeTODO(TODOindex, projectIndex = 0) {
   projectsList[projectIndex].removeTODO(TODOindex);
   updateLocalStorage();
 }

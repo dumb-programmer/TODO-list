@@ -46,6 +46,10 @@ aside>ul>ul {
     width: 7rem;
 }
 
+#more {
+    background-image: url("./chevron-down.svg");
+}
+
 .icon {
     background-repeat: no-repeat;
     height: 20px;
@@ -71,6 +75,10 @@ aside>ul>ul {
 
 .project-delete-btn {
     background: url("./trash-2.svg");
+}
+
+#new-project {
+    background-image: url("./plus.svg");
 }
 
 #content {
@@ -159,20 +167,17 @@ button {
     margin-right: 20px;
 }
 
-#form-ok {
-    background-color: rgb(27, 147, 202);
-    width: 60px;
-    border: none;
+.ok-btn {
+    background-color: rgb(60, 182, 238);
+    border-radius: 5px;
+    padding: 0.2rem;
 }
 
-#form-cancel {
-    border: none;
-    color: black;
-}
-
-#cancel-todo {
-    border: none;
-    color: black;
+.cancel-btn {
+    padding: 0.2rem;
+    margin-left: 0.5rem;
+    border-radius: 5px;
+    background-color: #eeee;
 }
 
 .todo-remove-btn {

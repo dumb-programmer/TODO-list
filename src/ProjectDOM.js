@@ -9,8 +9,6 @@ import Project from "./Project.js";
 import TODO_DOM from "./TODO_DOM.js";
 import upChevronIcon from "./chevron-up.svg";
 import downChevronIcon from "./chevron-down.svg";
-import plusIcon from "./plus.svg";
-import inboxIcon from "./inbox.svg";
 
 let selectedProject = document.querySelector("#default");
 
@@ -53,7 +51,7 @@ function ProjectDOM() {
     iconsContainer.appendChild(deleteBtn);
 
     editBtn.addEventListener("click", (event) => {
-      const current_li = event.target.parentNode;
+      const current_li = event.target.parentNode.parentNode;
       current_li.innerHTML = "";
 
       const input = document.createElement("input");
@@ -61,6 +59,7 @@ function ProjectDOM() {
 
       const addBtn = document.createElement("button");
       addBtn.setAttribute("id", "add-project-btn");
+      addBtn.classList.add(".ok-btn");
       addBtn.textContent = "Add";
 
       addBtn.addEventListener("click", () => {
@@ -122,9 +121,11 @@ function ProjectDOM() {
     projectAddBtn.addEventListener("click", () => {
       const li = document.createElement("li");
       const input = document.createElement("input");
+      input.style.marginBottom = "0.5rem";
 
       const addBtn = document.createElement("button");
       addBtn.setAttribute("id", "add-project-btn");
+      addBtn.classList.add("ok-btn");
       addBtn.textContent = "Add";
 
       addBtn.addEventListener("click", () => {
@@ -139,6 +140,7 @@ function ProjectDOM() {
 
       const cancelBtn = document.createElement("button");
       cancelBtn.setAttribute("id", "cancel-project-btn");
+      cancelBtn.classList.add("cancel-btn");
       cancelBtn.textContent = "Cancel";
 
       cancelBtn.addEventListener("click", () => {
@@ -181,13 +183,6 @@ function ProjectDOM() {
   }
 
   function render() {
-    const chevronIcon = document.querySelector("#more");
-    chevronIcon.style.background = `url(${downChevronIcon})`;
-    const addProject = document.querySelector("#new-project");
-    addProject.style.background = `url(${plusIcon})`;
-    const defaultImg = document.querySelector("#default>img");
-    defaultImg["src"] = inboxIcon;
-
     renderProjects(getProjectsList());
     addEventListeners();
   }

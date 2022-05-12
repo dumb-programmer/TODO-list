@@ -97,8 +97,9 @@ function TODO_DOM() {
     container.append(flexContainer);
 
     const okBtn = document.createElement("button");
-    okBtn.textContent = "OK";
+    okBtn.textContent = "Add";
     okBtn.setAttribute("id", "add-todo");
+    okBtn.classList.add("ok-btn");
 
     okBtn.addEventListener("click", (event) => {
       addTODOBtn.style.display = "";
@@ -125,6 +126,7 @@ function TODO_DOM() {
     const cancelBtn = document.createElement("button");
     cancelBtn.textContent = "Cancel";
     cancelBtn.setAttribute("id", "cancel-todo");
+    cancelBtn.classList.add("cancel-btn");
 
     cancelBtn.addEventListener("click", (event) => {
       addTODOBtn.style.display = "";
@@ -188,6 +190,7 @@ function TODO_DOM() {
     const okBtn = document.createElement("button");
     okBtn.textContent = "OK";
     okBtn.setAttribute("id", "add-todo");
+    okBtn.classList.add("ok-btn");
 
     okBtn.addEventListener("click", (event) => {
       addTODOBtn.style.display = "";
@@ -205,10 +208,11 @@ function TODO_DOM() {
       removeForm();
       renderTODOs(selectedProject);
     });
-
+    
     const cancelBtn = document.createElement("button");
     cancelBtn.textContent = "Cancel";
     cancelBtn.setAttribute("id", "cancel-todo");
+    cancelBtn.classList.add("cancel-btn");
 
     cancelBtn.addEventListener("click", (event) => {
       addTODOBtn.style.display = "";
