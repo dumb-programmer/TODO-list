@@ -1,28 +1,94 @@
+:root {
+    --primary: #F1F1F1;
+    --secondary: #23120B;
+    --tertiary: #21209C;
+    --quaternary: #FDB827;
+}
+
 * {
     margin: 0;
+    padding: 0;
     box-sizing: border-box;
-    color: #e2e2e2;
+}
+
+#sign-in-form {
+    background-color: #aaaaaa;
+    border-radius: 0.2rem;
+    box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.5);
+}
+
+.sign-in-btn {
+    background-color: white;
+    color: #686868;
+    padding: 10px 20px 10px 20px;
+    border-radius: 0.2rem;
+    margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14rem;
+}
+
+.sign-in-btn-icon {
+    height: 30px;
+    width: 30px;
+    margin-right: 1rem;
 }
 
 .grid-container {
     display: grid;
-    grid-template-areas: "head head head head head""aside main main main main""aside main main main main""aside main main main main""aside main main main main""aside main main main main""aside main main main main""foot foot foot foot foot";
-    grid-template-columns: repeat(4, 1fr);
-    height: 100vh;
-    background-color: #1f1f1f;
+    grid-template-columns: 1fr;
     grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "header"
+        "main"
+        "footer";
+    height: 100vh;
 }
 
 header {
-    grid-area: head;
+    grid-area: header;
+    display: flex;
+    justify-content: space-between;
     padding: 10px;
-    background-color: #282828;
+}
+
+header, footer {
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+#user-controls {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 15rem;
+}
+
+#user-controls img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+main {
+    grid-area: main;
+    background-color: var(--primary);
+}
+
+footer {
+    grid-area: footer;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
 }
 
 aside {
-    grid-area: aside;
+    flex-basis: 20%;
     padding: 5px;
-    background-color: #282828;
+    background-color: #dad3d3;
 }
 
 aside>ul>ul {
@@ -30,7 +96,6 @@ aside>ul>ul {
 }
 
 #default {
-    background-color: #363636;
     cursor: pointer;
     padding: 10px;
 }
@@ -47,7 +112,7 @@ aside>ul>ul {
 }
 
 #more {
-    background-image: url("./chevron-down.svg");
+    background-image: url("./images/chevron-down.svg");
 }
 
 .icon {
@@ -56,6 +121,9 @@ aside>ul>ul {
     width: 20px;
 }
 
+#projects {
+    margin-top: 0.8rem;
+}
 
 #projects>li {
     margin-left: 50px;
@@ -66,33 +134,40 @@ aside>ul>ul {
 }
 
 #projects>li:hover {
-    background-color: #363636;
+    background-color: var(--quaternary);
 }
 
-#project-input>button, #project-input>input {
+#project-input>input {
     color: black;
 }
 
 .project-delete-btn {
-    background: url("./trash-2.svg");
+    background: url("./images/trash-2.svg");
 }
 
 #new-project {
-    background-image: url("./plus.svg");
+    background-image: url("./images/plus.svg");
+}
+
+.highlighted {
+    background-color: var(--quaternary);
+}
+
+.project-name {
+    margin-right: 0.9rem;
 }
 
 #content {
-    grid-area: main;
     display: flex;
     flex-direction: column;
+    padding-top: 1rem;
     align-items: center;
-    position: relative;
-    top: 10px;
+    flex-basis: 80%;
 }
 
 #content>li {
-    border-bottom: 2px solid #363636;
-    width: 600px;
+    border-bottom: 2px solid var(--tertiary);
+    width: 60%;
     margin-bottom: 10px;
     padding: 10px;
 }
@@ -110,7 +185,7 @@ aside>ul>ul {
 }
 
 .edit-btn {
-    background-image: url("./edit-2.svg");
+    background-image: url("./images/edit-2.svg");
 }
 
 #content>li>#add:hover {
@@ -121,14 +196,8 @@ aside>ul>ul {
     list-style: none;
 }
 
-footer {
-    grid-area: foot;
-    text-align: center;
-    background-color: #282828;
-}
-
-header, footer {
-    border: 2px solid #1c1c1c;
+#add-todo {
+    background-image: url("./images/plus.svg");
 }
 
 .form-container {
@@ -137,26 +206,23 @@ header, footer {
     justify-content: center;
 }
 
-form {
-    position: absolute;
-    background-color: rgb(77, 77, 77);
-    top: 30%;
-    right: 50%;
-    border: 2px solid black;
+#todo-form {
+    background-color: var(--quaternary);
+    padding: 10px;
 }
 
-input[type="text"], input[type="date"], textarea, select {
-    color: black;
-}
 
 button {
     all: unset;
     cursor: pointer;
 }
 
-.container {
-    padding: 10px;
-    color: black;
+button:focus {
+    border: 2px dotted #EEEEEE;
+}
+
+a {
+    color: var(--quaternary);
 }
 
 .flex-container {
@@ -167,19 +233,25 @@ button {
     margin-right: 20px;
 }
 
-.ok-btn {
-    background-color: rgb(60, 182, 238);
+.ok-btn, #add-project-btn {
+    background-color: var(--secondary);
     border-radius: 5px;
-    padding: 0.2rem;
+    width: 3.5rem;
+    text-align: center;
 }
 
 .cancel-btn {
-    padding: 0.2rem;
     margin-left: 0.5rem;
     border-radius: 5px;
-    background-color: #eeee;
+    background-color: var(--tertiary);
+}
+
+.ok-btn, #add-project-btn, .cancel-btn {
+    padding: 0.2rem;
+    color: white;
+    text-align: center;
 }
 
 .todo-remove-btn {
-    background-image: url("./delete.svg");
+    background-image: url("./images/delete.svg");
 }
