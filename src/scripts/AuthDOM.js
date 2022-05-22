@@ -6,34 +6,20 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-// import * as firebaseui from "firebaseui";
-// import "firebaseui/dist/firebaseui.css";
-
 import googleIcon from "../images/google-icon.svg";
 import maskIcon from "../images/mask-solid.svg";
 import githubIcon from "../images/github-icon.svg";
 
 function AuthenticationDOM() {
-  // const ui = new firebaseui.auth.AuthUI(getAuth());
-  // console.log(ui);
-  // const uiConfig = {
-  //   signInOptions: [
-  //     GoogleAuthProvider.PROVIDER_ID,
-  //     GithubAuthProvider.PROVIDER_ID,
-  //   ],
-  //   signInFlow: "popup",
-  // };
-
   async function signInWithGoogle(e) {
     e.preventDefault();
     let provider = new GoogleAuthProvider();
     await signInWithPopup(getAuth(), provider);
   }
 
-  async function anonymousSignIn(e) {
+  async function signInWithAnonymous(e) {
     e.preventDefault();
     const auth = getAuth();
-    // let provider = new Provider
     signInAnonymously(auth);
   }
 
@@ -47,48 +33,41 @@ function AuthenticationDOM() {
     const form = document.createElement("form");
     form.setAttribute("id", "sign-in-form");
 
-    const googleBtn = document.createElement("button");
-    googleBtn.classList.add("sign-in-btn");
-    googleBtn.addEventListener("click", signInWithGoogle);
+    const buttons = [
+      {
+        caption: "Sign in with Google",
+        icon: googleIcon,
+        callback: signInWithGoogle,
+      },
+      {
+        caption: "Sign in with Github",
+        icon: githubIcon,
+        callback: signInWithGithub,
+      },
+      {
+        caption: "Sign in Anonymously",
+        icon: maskIcon,
+        callback: signInWithAnonymous,
+      },
+    ];
 
-    const googleBtnText = document.createElement("span");
-    googleBtnText.textContent = "Sign in With Google";
-    const googleBtnIcon = document.createElement("img");
-    googleBtnIcon.classList.add("sign-in-btn-icon");
-    googleBtnIcon.src = googleIcon;
+    buttons.forEach((button) => {
+      const btn = document.createElement("button");
+      btn.classList.add("sign-in-btn");
 
-    googleBtn.appendChild(googleBtnIcon);
-    googleBtn.appendChild(googleBtnText);
+      const btnText = document.createElement("span");
+      btnText.textContent = button.caption;
+      const btnIcon = document.createElement("img");
+      btnIcon.classList.add("sign-in-btn-icon");
+      btnIcon.src = button.icon;
 
-    const githubBtn = document.createElement("button");
-    githubBtn.classList.add("sign-in-btn");
-    githubBtn.addEventListener("click", signInWithGithub);
+      btn.appendChild(btnIcon);
+      btn.appendChild(btnText);
 
-    const githubBtnText = document.createElement("span");
-    githubBtnText.textContent = "Sign in with Github";
-    const githubBtnIcon = document.createElement("img");
-    githubBtnIcon.classList.add("sign-in-btn-icon");
-    githubBtnIcon.src = githubIcon;
+      btn.addEventListener("click", button.callback);
 
-    githubBtn.appendChild(githubBtnIcon);
-    githubBtn.appendChild(githubBtnText);
-
-    const anonymousBtn = document.createElement("button");
-    anonymousBtn.classList.add("sign-in-btn");
-    anonymousBtn.addEventListener("click", anonymousSignIn);
-
-    const anonymousBtnText = document.createElement("span");
-    anonymousBtnText.textContent = "Sign in Anonymously";
-    const anonymousBtnIcon = document.createElement("img");
-    anonymousBtnIcon.classList.add("sign-in-btn-icon");
-    anonymousBtnIcon.src = maskIcon;
-
-    anonymousBtn.appendChild(anonymousBtnIcon);
-    anonymousBtn.appendChild(anonymousBtnText);
-
-    form.appendChild(googleBtn);
-    form.appendChild(githubBtn);
-    form.appendChild(anonymousBtn);
+      form.appendChild(btn);
+    });
 
     const main = document.querySelector("main");
     main.style.display = "flex";
@@ -102,11 +81,7 @@ function AuthenticationDOM() {
   };
 
   function render() {
-    // console.log(ui);
     renderForm();
-    // ui.start("#firebaseui-auth-container", uiConfig);
-
-    console.log("render called");
   }
 
   return { render };
