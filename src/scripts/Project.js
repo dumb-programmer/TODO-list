@@ -1,7 +1,7 @@
 class Project {
     constructor(name) {
         this.name = name;
-        this.TODOs = []
+        this.todos = []
     }
 
     getName() {
@@ -9,22 +9,22 @@ class Project {
     }
 
     getTODOs() {
-        return this.TODOs
+        return this.todos
     }
 
     addTODO(todo) {
-        this.TODOs.push(todo)
+        this.todos.push(todo)
     }
 
     replaceTODO(index, todo) {
-        this.TODOs[index] = todo
+        this.todos[index] = todo
     }
 
     removeTODO(index) {
-        if (index == 0 && this.TODOs.length == 1) {
-            this.TODOs = []
+        if (index == 0 && this.todos.length == 1) {
+            this.todos = []
         }
-        this.TODOs.splice(index, 1);
+        this.todos.splice(index, 1);
     }
 }
 export default Project;

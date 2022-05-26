@@ -3,6 +3,16 @@ import ProjectDOM from "./ProjectDOM.js";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import loaderDom from "./loaderDOM.js";
 import genericIcon from "../images/SeekPng.com_default-avatar-png_5147412.png";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
+import { setupLocalStorage } from "./index.js";
 
 function DOM() {
   const authDOM = AuthenticationDOM();
@@ -25,9 +35,10 @@ function DOM() {
     signOut(getAuth());
     const AuthDOM = AuthenticationDOM();
     AuthDOM.render();
+    localStorage.clear();
   }
 
-  function authStateObserver(user) {
+  async function authStateObserver(user) {
     clearScreen();
     if (user) {
       const header = document.querySelector("header");
@@ -53,8 +64,50 @@ function DOM() {
       header.appendChild(container);
 
       setup();
-      const projectDOM = ProjectDOM();
-      projectDOM.render();
+
+      const db = getFirestore();
+      const colRef = collection(db, user.uid);
+      const q = query(colRef, orderBy("createdAt"));
+
+      async function setupFireStore() {
+        try {
+          await addDoc(colRef, {
+            name: "Default",
+            createdAt: serverTimestamp(),
+            todos: [],
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      if (localStorage.getItem("projectsList") == null) {
+        let list = [];
+        await getDocs(q)
+          .then((snapshot) => {
+            snapshot.docs.forEach((item) => {
+              list.push({ id: item.id, ...item.data() });
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        if (list.length == 0) {
+          setupFireStore();
+          await getDocs(q).then((snapshot) => {
+            snapshot.docs.forEach((item) => {
+              list.push({ id: item.id, ...item.data() });
+            });
+          });
+        }
+        setupLocalStorage(list);
+        const projectDOM = ProjectDOM(user);
+        projectDOM.render();
+      } else {
+        const projectDOM = ProjectDOM(user);
+        projectDOM.render();
+      }
     } else {
       authDOM.render();
     }

@@ -10,7 +10,7 @@ import TODO_DOM from "./TODO_DOM.js";
 import upChevronIcon from "../images/chevron-up.svg";
 import downChevronIcon from "../images/chevron-down.svg";
 
-function ProjectDOM() {
+function ProjectDOM(user) {
   function setSelectedProject(index) {
     selectedProject.index = index;
     reRender();
@@ -18,7 +18,7 @@ function ProjectDOM() {
 
   let selectedProject = { index: 0, setSelectedProject };
 
-  const todo_dom = TODO_DOM(selectedProject);
+  const todo_dom = TODO_DOM(selectedProject, user);
 
   function renderProjects(projectsList) {
     for (let i = 1; i < projectsList.length; i++) {
@@ -102,6 +102,7 @@ function ProjectDOM() {
     iconsContainer.appendChild(deleteBtn);
 
     editBtn.addEventListener("click", (event) => {
+      const projectsList = getProjectsList();
       event.stopPropagation();
       renderEditProjectForm(
         index,
@@ -159,10 +160,12 @@ function ProjectDOM() {
       addBtn.addEventListener("click", () => {
         const name = input.value;
         const project = new Project(name);
-        addProject(project);
+        addProject(project, user);
 
         const inputLi = document.querySelector("#project-input");
         ulProjects.removeChild(inputLi);
+        
+        const projectsList = getProjectsList();
         appendProject(projectsList, projectsList.length - 1);
       });
 

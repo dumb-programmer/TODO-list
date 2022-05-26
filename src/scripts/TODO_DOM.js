@@ -1,10 +1,18 @@
-import { addTODO, projectsList, removeTODO, replaceTODO } from "./index.js";
+import {
+  addTODO,
+  getProjectsList,
+  projectsList,
+  removeTODO,
+  replaceTODO,
+} from "./index.js";
 import TODO from "./TODO.js";
 
-function TODO_DOM(selectedProject) {
+function TODO_DOM(selectedProject, user) {
   const content = document.querySelector("#content");
+  const projectsList = getProjectsList();
   function renderTODOs() {
     clearScreen();
+    const projectsList = getProjectsList();
     const todos = projectsList[selectedProject.index].getTODOs();
     // console.log(todos);
     todos.forEach((todo, i) => {
@@ -96,10 +104,10 @@ function TODO_DOM(selectedProject) {
       const Priority = document.querySelector("#priority").value;
       const todo = new TODO(Title, Description, Due, Priority);
       let index = selectedProject.index;
-      addTODO(index, todo);
+      addTODO(index, todo, user);
       removeForm();
       let projectIndex = selectedProject.index;
-      let i = projectsList[projectIndex].TODOs.length - 1;
+      let i = projectsList[projectIndex].todos.length - 1;
       appendTODO(todo, i);
     });
 

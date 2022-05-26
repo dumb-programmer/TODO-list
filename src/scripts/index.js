@@ -2,31 +2,43 @@ import "../style.css";
 import TODO from "./TODO.js";
 import Project from "./Project.js";
 import DOM from "./DOM.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 let projectsList = [];
 
-if (JSON.parse(localStorage.getItem("projectsList")) == null) {
-  projectsList.push(new Project("Default"));
+const firebaseConfig = {
+  apiKey: "AIzaSyB5KDeER-3LcSMtdt5PvXsFKVP0hp5yGAo",
+  authDomain: "todo-app-e52fb.firebaseapp.com",
+  projectId: "todo-app-e52fb",
+  storageBucket: "todo-app-e52fb.appspot.com",
+  messagingSenderId: "852196044978",
+  appId: "1:852196044978:web:1e978741870f44671f19ab",
+  measurementId: "G-RE1D95706F",
+};
 
-  projectsList[0].addTODO(new TODO("TEST1", "lorem epsum", "10/9/2021"));
-  projectsList[0].addTODO(new TODO("TEST2", "lorem e1312", "14/9/2021"));
-  projectsList[0].addTODO(new TODO("TEST3", "lorem 76576", "16/9/2021"));
+const app = initializeApp(firebaseConfig);
 
+function setupLocalStorage(projectsList) {
+  console.log(projectsList);
   localStorage.setItem("projectsList", JSON.stringify(projectsList));
-} else {
-  projectsList = getProjectsList();
 }
 
 function getProjectsList() {
   // Adds the methods back to projects
   let temp = [];
   let projectsList = JSON.parse(localStorage.getItem("projectsList"));
-  // let projectsList = await getDocs(collection(db, "proj"));
   for (let i = 0; i < projectsList.length; ++i) {
     if (projectsList[i] != null) {
       Object.setPrototypeOf(projectsList[i], Project.prototype);
-      for (let j = 0; j < projectsList[i].TODOs.length; ++j) {
-        Object.setPrototypeOf(projectsList[i].TODOs[j], TODO.prototype);
+      for (let j = 0; j < projectsList[i].todos.length; ++j) {
+        Object.setPrototypeOf(projectsList[i].todos[j], TODO.prototype);
       }
       temp.push(projectsList[i]);
     }
@@ -34,105 +46,77 @@ function getProjectsList() {
   return temp;
 }
 
-function updateLocalStorage() {
+function updateLocalStorage(projectsList) {
   localStorage.setItem("projectsList", JSON.stringify(projectsList));
 }
 
-function addProject(project) {
+async function addProject(project, user) {
+  const projectsList = getProjectsList();
   projectsList.push(project);
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
+  console.log("addProject() called", new Date().toLocaleTimeString());
+  const db = getFirestore();
+  const projCol = collection(db, user.uid);
+  await addDoc(projCol, {
+    name: project.getName(),
+    createdAt: serverTimestamp(),
+    todos: [],
+  });
 }
 
 function removeProject(index) {
+  const projectsList = getProjectsList();
   projectsList.splice(index, 1);
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
 }
 
 function replaceProject(projectIndex, project) {
+  const projectsList = getProjectsList();
   projectsList[projectIndex] = project;
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
 }
 
-function addTODO(index, TODO) {
+async function addTODO(index, TODO, user) {
+  console.log("addTODO() called", new Date().toLocaleTimeString());
+  const projectsList = getProjectsList();
   projectsList[index].addTODO(TODO);
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
+
+  const db = getFirestore();
+  const projectRef = doc(db, user.uid, projectsList[index].id);
+  await updateDoc(projectRef, {
+    todos: projectsList[index].getTODOs().map((todo) => {
+      console.log({
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+      });
+      return {
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+      };
+    }),
+  });
 }
 
 function replaceTODO(projectIndex, TODOIndex, TODO) {
+  const projectsList = getProjectsList();
   projectsList[projectIndex].replaceTODO(TODOIndex, TODO);
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
 }
 
 function removeTODO(TODOindex, projectIndex) {
+  const projectsList = getProjectsList();
   projectsList[projectIndex].removeTODO(TODOindex);
-  updateLocalStorage();
+  updateLocalStorage(projectsList);
 }
 
-// --------------------------- Firebase ------------------------------------------------ //
-import { initializeApp } from "firebase/app";
-// import { getFirestore } from "@firebase/firestore";
-// import { collection, addDoc } from "firebase/firestore";
-// import { getDocs } from "firebase/firestore";
-// import { getUA } from "@firebase/util";
-// import { getAuth } from "firebase/auth";
+let dom = DOM();
+dom.render();
 
-// (async () => {
-  const firebaseConfig = {
-    apiKey: "AIzaSyB5KDeER-3LcSMtdt5PvXsFKVP0hp5yGAo",
-    authDomain: "todo-app-e52fb.firebaseapp.com",
-    projectId: "todo-app-e52fb",
-    storageBucket: "todo-app-e52fb.appspot.com",
-    messagingSenderId: "852196044978",
-    appId: "1:852196044978:web:1e978741870f44671f19ab",
-    measurementId: "G-RE1D95706F",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  // const auth = getAuth(app);
-  // try {
-  //   const docRef = await addDoc(collection(db, "proj"), {
-  //     Name: "Test",
-  //     todos: {
-  //       title: "Test3",
-  //       description: "This is a test3 todo",
-  //       dueDate: "21/05/2022",
-  //       priority: "medium",
-  //     },
-  //   });
-  //   console.log("Document written with ID: ", docRef.id);
-  // } catch (e) {
-  //   console.error("Error adding document: ", e);
-  // }
-
-  // const projects = await getDocs(collection(db, "proj"));
-  // projects.snap
-
-  // async function addData() {
-  //   try {
-  //     const docRef = await addDoc(collection(db, "proj"), {
-  //       Name: "Test",
-  //       todos: {
-  //         title: "Test3",
-  //         description: "This is a test3 todo",
-  //         dueDate: "21/05/2022",
-  //         priority: "medium",
-  //       },
-  //     });
-  //     console.log("Document written with ID: ", docRef.id);
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //   }
-  // }
-
-  // setTimeout(addData, 100);
-
-  // const querySnapshot = await getDocs(collection(db, "proj"));
-  // console.log(querySnapshot);
-  // ------------------------------------------------------------------------------------- //
-
-  let dom = DOM();
-  dom.render();
-// })();
 
 export {
   projectsList,
@@ -143,4 +127,5 @@ export {
   addTODO,
   removeTODO,
   replaceTODO,
+  setupLocalStorage,
 };
