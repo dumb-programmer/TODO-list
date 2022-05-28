@@ -100,6 +100,10 @@ aside>ul>ul {
     padding: 10px;
 }
 
+#default:hover {
+    background-color: var(--quaternary);
+}
+
 #default>img {
     position: relative;
     top: 3px;
