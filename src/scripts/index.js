@@ -13,8 +13,6 @@ import {
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
-let projectsList = [];
-
 const firebaseConfig = {
   apiKey: "AIzaSyB5KDeER-3LcSMtdt5PvXsFKVP0hp5yGAo",
   authDomain: "todo-app-e52fb.firebaseapp.com",
@@ -151,7 +149,6 @@ let dom = DOM();
 dom.render();
 
 export {
-  projectsList,
   addProject,
   getProjectsList,
   removeProject,
