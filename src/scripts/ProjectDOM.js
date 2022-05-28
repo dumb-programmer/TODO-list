@@ -1,5 +1,4 @@
 import {
-  projectsList,
   addProject,
   getProjectsList,
   removeProject,
@@ -102,8 +101,8 @@ function ProjectDOM(user) {
     iconsContainer.appendChild(deleteBtn);
 
     editBtn.addEventListener("click", (event) => {
-      const projectsList = getProjectsList();
       event.stopPropagation();
+      const projectsList = getProjectsList();
       renderEditProjectForm(
         index,
         projectsList[index],
@@ -112,9 +111,10 @@ function ProjectDOM(user) {
       );
     });
 
-    deleteBtn.addEventListener("click", (event) => {
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const projectsListDiv = document.querySelector("#projects");
-      const li = event.target.parentNode.parentNode;
+      const li = e.target.parentNode.parentNode;
       projectsListDiv.removeChild(li);
       removeProject(index, user);
     });
@@ -188,6 +188,7 @@ function ProjectDOM(user) {
     projectMoreBtn.addEventListener("click", () => {
       const lis = document.querySelectorAll("#projects>li");
       const btn = document.querySelector("#more");
+      const projectsList = getProjectsList();
       if (lis.length > 0) {
         btn.style.background = `url(${upChevronIcon})`;
         clearProjectsList();
