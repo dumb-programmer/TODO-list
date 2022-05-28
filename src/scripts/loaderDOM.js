@@ -1,4 +1,4 @@
-import loaderGif from "../images/dark-loader.gif";
+import loaderAnimation from "../images/Rolling-1s-200px.svg";
 
 function loaderDom() {
   function setupMainLayout() {
@@ -13,7 +13,7 @@ function loaderDom() {
     const loader = document.createElement("div");
 
     const img = document.createElement("img");
-    img.src = loaderGif;
+    img.src = loaderAnimation;
     img.style.height = "50px";
     img.style.width = "50px";
     loader.appendChild(img);
