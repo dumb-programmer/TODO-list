@@ -1,5 +1,3 @@
-import AuthenticationDOM from "./AuthDOM.js";
-import ProjectDOM from "./ProjectDOM.js";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import loaderDom from "./loaderDOM.js";
 import genericIcon from "../images/SeekPng.com_default-avatar-png_5147412.png";
@@ -15,8 +13,6 @@ import {
 import { setupLocalStorage } from "./index.js";
 
 function DOM() {
-  const authDOM = AuthenticationDOM();
-
   function clearScreen() {
     const main = document.querySelector("main");
     const header = document.querySelector("header");
@@ -31,8 +27,9 @@ function DOM() {
     onAuthStateChanged(getAuth(), authStateObserver);
   }
 
-  function signOutUser() {
+  async function signOutUser() {
     signOut(getAuth());
+    const AuthenticationDOM = await import("./AuthDOM");
     const AuthDOM = AuthenticationDOM();
     AuthDOM.render();
     localStorage.clear();
@@ -41,6 +38,7 @@ function DOM() {
   async function authStateObserver(user) {
     clearScreen();
     if (user) {
+      const { default: ProjectDOM } = await import("./ProjectDOM");
       const header = document.querySelector("header");
       const container = document.createElement("div");
       container.setAttribute("id", "user-controls");
@@ -105,10 +103,13 @@ function DOM() {
         const projectDOM = ProjectDOM(user);
         projectDOM.render();
       } else {
+        const { default: ProjectDOM } = await import("./ProjectDOM");
         const projectDOM = ProjectDOM(user);
         projectDOM.render();
       }
     } else {
+      const { default: AuthenticationDOM } = await import("./AuthDOM");
+      const authDOM = AuthenticationDOM();
       authDOM.render();
     }
   }
