@@ -162,6 +162,7 @@ aside>ul>ul {
 }
 
 #content {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
@@ -214,8 +215,23 @@ aside>ul>ul {
 #todo-form {
     background-color: var(--quaternary);
     padding: 10px;
+    box-shadow: 10px 10px 37px 0px rgba(0, 0, 0, 0.42);
+    -webkit-box-shadow: 10px 10px 37px 0px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: 10px 10px 37px 0px rgba(0, 0, 0, 0.42);
+    border-radius: 0.5rem;
 }
 
+#modal-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
 
 button {
     all: unset;
