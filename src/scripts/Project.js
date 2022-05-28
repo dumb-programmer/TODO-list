@@ -12,6 +12,10 @@ class Project {
         return this.todos
     }
 
+    setName(name){
+        this.name = name;
+    }
+
     addTODO(todo) {
         this.todos.push(todo)
     }

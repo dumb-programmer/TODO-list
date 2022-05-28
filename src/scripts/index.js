@@ -9,7 +9,9 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
+  deleteDoc,
 } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
 let projectsList = [];
 
@@ -23,10 +25,9 @@ const firebaseConfig = {
   measurementId: "G-RE1D95706F",
 };
 
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 function setupLocalStorage(projectsList) {
-  console.log(projectsList);
   localStorage.setItem("projectsList", JSON.stringify(projectsList));
 }
 
@@ -54,30 +55,41 @@ async function addProject(project, user) {
   const projectsList = getProjectsList();
   projectsList.push(project);
   updateLocalStorage(projectsList);
-  console.log("addProject() called", new Date().toLocaleTimeString());
   const db = getFirestore();
-  const projCol = collection(db, user.uid);
-  await addDoc(projCol, {
+  const colRef = collection(db, user.uid);
+  await addDoc(colRef, {
     name: project.getName(),
     createdAt: serverTimestamp(),
     todos: [],
   });
 }
 
-function removeProject(index) {
+async function removeProject(index, user) {
   const projectsList = getProjectsList();
+  const id = projectsList[index].id;
   projectsList.splice(index, 1);
+
   updateLocalStorage(projectsList);
+
+  const db = getFirestore();
+  const docRef = doc(db, user.uid, id);
+  await deleteDoc(docRef);
 }
 
-function replaceProject(projectIndex, project) {
+async function replaceProject(projectIndex, project, user) {
   const projectsList = getProjectsList();
-  projectsList[projectIndex] = project;
+  const id = projectsList[projectIndex].id;
+  project.id = id;
+  projectsList[projectIndex].setName(project.getName());
   updateLocalStorage(projectsList);
+
+  const newName = project.getName();
+  const db = getFirestore();
+  const projRef = doc(db, user.uid, id);
+  await updateDoc(projRef, { name: newName });
 }
 
 async function addTODO(index, TODO, user) {
-  console.log("addTODO() called", new Date().toLocaleTimeString());
   const projectsList = getProjectsList();
   projectsList[index].addTODO(TODO);
   updateLocalStorage(projectsList);
@@ -86,12 +98,6 @@ async function addTODO(index, TODO, user) {
   const projectRef = doc(db, user.uid, projectsList[index].id);
   await updateDoc(projectRef, {
     todos: projectsList[index].getTODOs().map((todo) => {
-      console.log({
-        title: todo.getTitle(),
-        description: todo.getDescription(),
-        dueDate: todo.getDueDate(),
-        priority: todo.getPriority(),
-      });
       return {
         title: todo.getTitle(),
         description: todo.getDescription(),
@@ -102,21 +108,47 @@ async function addTODO(index, TODO, user) {
   });
 }
 
-function replaceTODO(projectIndex, TODOIndex, TODO) {
+async function replaceTODO(projectIndex, TODOIndex, TODO, user) {
   const projectsList = getProjectsList();
   projectsList[projectIndex].replaceTODO(TODOIndex, TODO);
   updateLocalStorage(projectsList);
+
+  const db = getFirestore();
+  const projectRef = doc(db, user.uid, projectsList[projectIndex].id);
+  await updateDoc(projectRef, {
+    todos: projectsList[projectIndex].getTODOs().map((todo) => {
+      return {
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+      };
+    }),
+  });
 }
 
-function removeTODO(TODOindex, projectIndex) {
+async function removeTODO(TODOindex, projectIndex, user) {
   const projectsList = getProjectsList();
-  projectsList[projectIndex].removeTODO(TODOindex);
+  const project = projectsList[projectIndex];
+  project.removeTODO(TODOindex);
   updateLocalStorage(projectsList);
+
+  const db = getFirestore();
+  const projRef = doc(db, user.uid, project.id);
+  await updateDoc(projRef, {
+    todos: project.getTODOs().map((todo) => {
+      return {
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+      };
+    }),
+  });
 }
 
 let dom = DOM();
 dom.render();
-
 
 export {
   projectsList,

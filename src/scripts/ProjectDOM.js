@@ -51,7 +51,7 @@ function ProjectDOM(user) {
       const name = input.value;
       const new_project = new Project(name);
 
-      replaceProject(index, new_project);
+      replaceProject(index, new_project, user);
 
       target.innerHTML = "";
       const projectName = document.createElement("p");
@@ -116,8 +116,7 @@ function ProjectDOM(user) {
       const projectsListDiv = document.querySelector("#projects");
       const li = event.target.parentNode.parentNode;
       projectsListDiv.removeChild(li);
-      removeProject(index);
-      console.log(selectedProject.index);
+      removeProject(index, user);
     });
 
     const project = projectsList[index];
@@ -164,7 +163,7 @@ function ProjectDOM(user) {
 
         const inputLi = document.querySelector("#project-input");
         ulProjects.removeChild(inputLi);
-        
+
         const projectsList = getProjectsList();
         appendProject(projectsList, projectsList.length - 1);
       });
@@ -214,7 +213,6 @@ function ProjectDOM(user) {
 
   function highlightProject() {
     const defaultProject = document.getElementById("default");
-    // console.log("selectedProject in highlight", selectedProject.index);
     if (selectedProject.index === 0) {
       defaultProject.classList.add("highlighted");
     } else {
@@ -228,7 +226,6 @@ function ProjectDOM(user) {
   }
 
   function render() {
-    // console.log(new Date().toLocaleTimeString(), "project render called");
     clearProjectsList();
     renderProjects(getProjectsList());
     addEventListeners();
@@ -237,7 +234,6 @@ function ProjectDOM(user) {
   }
 
   function reRender() {
-    // console.log(new Date().toLocaleTimeString(), "project re-render called");
     clearProjectsList();
     renderProjects(getProjectsList());
     highlightProject();

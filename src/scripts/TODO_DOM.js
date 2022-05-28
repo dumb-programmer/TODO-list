@@ -1,7 +1,6 @@
 import {
   addTODO,
   getProjectsList,
-  projectsList,
   removeTODO,
   replaceTODO,
 } from "./index.js";
@@ -14,7 +13,6 @@ function TODO_DOM(selectedProject, user) {
     clearScreen();
     const projectsList = getProjectsList();
     const todos = projectsList[selectedProject.index].getTODOs();
-    // console.log(todos);
     todos.forEach((todo, i) => {
       appendTODO(todo, i);
       i += 1;
@@ -39,7 +37,7 @@ function TODO_DOM(selectedProject, user) {
     iconContainer.appendChild(removeBtn);
 
     removeBtn.addEventListener("click", () => {
-      removeTODO(index, selectedProject.index);
+      removeTODO(index, selectedProject.index, user);
       renderTODOs(selectedProject.index);
     });
 
@@ -65,7 +63,6 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function renderForm() {
-    console.log("Form rendered");
     const addTODOBtn = document.querySelector("#add-todo");
     addTODOBtn.style.display = "None";
     const formContainer = document.createElement("div");
@@ -186,7 +183,7 @@ function TODO_DOM(selectedProject, user) {
       const Priority = document.querySelector("#priority").value;
       const todo = new TODO(Title, Description, Due, Priority);
       let index = selectedProject.index;
-      replaceTODO(index, TODOindex, todo);
+      replaceTODO(index, TODOindex, todo, user);
       removeForm();
       renderTODOs();
     });
@@ -218,7 +215,6 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function clearScreen() {
-    // console.log("clear screen called");
     const content = document.querySelector("#content");
     const todos = document.querySelectorAll("#content>.todo-item");
     if (todos != null) {
@@ -229,7 +225,6 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function render() {
-    // console.log(new Date().toLocaleTimeString(), "todo render called");
     renderTODOs();
     addEventListeners();
   }
