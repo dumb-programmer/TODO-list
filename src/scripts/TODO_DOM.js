@@ -1,9 +1,4 @@
-import {
-  addTODO,
-  getProjectsList,
-  removeTODO,
-  replaceTODO,
-} from "./index.js";
+import { addTODO, getProjectsList, removeTODO, replaceTODO } from "./index.js";
 import TODO from "./TODO.js";
 
 function TODO_DOM(selectedProject, user) {
@@ -64,7 +59,6 @@ function TODO_DOM(selectedProject, user) {
 
   function renderForm() {
     const addTODOBtn = document.querySelector("#add-todo");
-    addTODOBtn.style.display = "None";
     const formContainer = document.createElement("div");
     formContainer.setAttribute("class", "form-container");
     const container = document.createElement("div");
@@ -93,7 +87,6 @@ function TODO_DOM(selectedProject, user) {
     okBtn.classList.add("ok-btn");
 
     okBtn.addEventListener("click", (event) => {
-      addTODOBtn.style.display = "";
       event.preventDefault();
       const Title = document.querySelector("#title").value;
       const Description = document.querySelector("#description").value;
@@ -114,7 +107,6 @@ function TODO_DOM(selectedProject, user) {
     cancelBtn.classList.add("cancel-btn");
 
     cancelBtn.addEventListener("click", (event) => {
-      addTODOBtn.style.display = "";
       event.preventDefault();
       removeForm();
     });
@@ -126,7 +118,12 @@ function TODO_DOM(selectedProject, user) {
 
     formContainer.appendChild(form);
 
-    content.appendChild(formContainer);
+    const modalContainer = document.createElement("div");
+    modalContainer.setAttribute("id", "modal-container");
+
+    modalContainer.appendChild(formContainer);
+
+    content.appendChild(modalContainer);
   }
 
   function renderEditForm(TODOindex) {
@@ -210,8 +207,8 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function removeForm() {
-    const formContainer = document.querySelector(".form-container");
-    content.removeChild(formContainer);
+    const modalContainer = document.querySelector("#modal-container");
+    content.removeChild(modalContainer);
   }
 
   function clearScreen() {
