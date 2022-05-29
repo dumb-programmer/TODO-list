@@ -3,7 +3,6 @@ import TODO from "./TODO.js";
 
 function TODO_DOM(selectedProject, user) {
   const content = document.querySelector("#content");
-  const projectsList = getProjectsList();
   function renderTODOs() {
     clearScreen();
     const projectsList = getProjectsList();
@@ -36,7 +35,7 @@ function TODO_DOM(selectedProject, user) {
       renderTODOs(selectedProject.index);
     });
 
-    editBtn.addEventListener("click", (event) => {
+    editBtn.addEventListener("click", () => {
       renderEditForm(index);
     });
 
@@ -57,8 +56,14 @@ function TODO_DOM(selectedProject, user) {
     });
   }
 
+  function removeForm() {
+    const modalContainer = document.querySelector("#modal-container");
+    const content = document.querySelector("#content");
+    content.removeChild(modalContainer);
+  }
+
   function renderForm() {
-    const addTODOBtn = document.querySelector("#add-todo");
+    const projectsList = getProjectsList();
     const formContainer = document.createElement("div");
     formContainer.setAttribute("class", "form-container");
     const container = document.createElement("div");
@@ -98,7 +103,7 @@ function TODO_DOM(selectedProject, user) {
       removeForm();
       let projectIndex = selectedProject.index;
       let i = projectsList[projectIndex].todos.length - 1;
-      appendTODO(todo, i);
+      renderTODOs();
     });
 
     const cancelBtn = document.createElement("button");
@@ -128,6 +133,7 @@ function TODO_DOM(selectedProject, user) {
 
   function renderEditForm(TODOindex) {
     const projectIndex = selectedProject.index;
+    const projectsList = getProjectsList();
     const project = projectsList[projectIndex];
     const currentTODO = project.getTODOs()[+TODOindex];
 
@@ -136,8 +142,6 @@ function TODO_DOM(selectedProject, user) {
     const dueDate = currentTODO.getDueDate();
     const priority = currentTODO.getPriority();
 
-    const addTODOBtn = document.querySelector("#add-todo");
-    addTODOBtn.style.display = "None";
     const formContainer = document.createElement("div");
     formContainer.setAttribute("class", "form-container");
     const container = document.createElement("div");
@@ -172,7 +176,6 @@ function TODO_DOM(selectedProject, user) {
     okBtn.classList.add("ok-btn");
 
     okBtn.addEventListener("click", (event) => {
-      addTODOBtn.style.display = "";
       event.preventDefault();
       const Title = document.querySelector("#title").value;
       const Description = document.querySelector("#description").value;
@@ -191,7 +194,6 @@ function TODO_DOM(selectedProject, user) {
     cancelBtn.classList.add("cancel-btn");
 
     cancelBtn.addEventListener("click", (event) => {
-      addTODOBtn.style.display = "";
       event.preventDefault();
       removeForm();
     });
@@ -203,12 +205,12 @@ function TODO_DOM(selectedProject, user) {
 
     formContainer.appendChild(form);
 
-    content.appendChild(formContainer);
-  }
+    const modalContainer = document.createElement("div");
+    modalContainer.setAttribute("id", "modal-container");
 
-  function removeForm() {
-    const modalContainer = document.querySelector("#modal-container");
-    content.removeChild(modalContainer);
+    modalContainer.appendChild(formContainer);
+
+    content.appendChild(modalContainer);
   }
 
   function clearScreen() {
