@@ -29,9 +29,9 @@ function DOM() {
 
   async function signOutUser() {
     signOut(getAuth());
+    clearScreen();
     const { default: AuthenticationDOM } = await import("./AuthDOM");
     const AuthDOM = AuthenticationDOM();
-    clearScreen();
     AuthDOM.render();
     localStorage.clear();
   }
