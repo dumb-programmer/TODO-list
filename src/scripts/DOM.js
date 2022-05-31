@@ -10,6 +10,8 @@ import {
   query,
   serverTimestamp,
 } from "firebase/firestore";
+import AuthenticationDOM from "./AuthDOM";
+import ProjectDOM from "./ProjectDOM";
 import { setupLocalStorage } from "./index.js";
 
 function DOM() {
@@ -30,7 +32,6 @@ function DOM() {
   async function signOutUser() {
     signOut(getAuth());
     clearScreen();
-    const { default: AuthenticationDOM } = await import("./AuthDOM");
     const AuthDOM = AuthenticationDOM();
     AuthDOM.render();
     localStorage.clear();
@@ -39,7 +40,6 @@ function DOM() {
   async function authStateObserver(user) {
     clearScreen();
     if (user) {
-      const { default: ProjectDOM } = await import("./ProjectDOM");
       const header = document.querySelector("header");
       const container = document.createElement("div");
       container.setAttribute("id", "user-controls");
@@ -104,12 +104,10 @@ function DOM() {
         const projectDOM = ProjectDOM(user);
         projectDOM.render();
       } else {
-        const { default: ProjectDOM } = await import("./ProjectDOM");
         const projectDOM = ProjectDOM(user);
         projectDOM.render();
       }
     } else {
-      const { default: AuthenticationDOM } = await import("./AuthDOM");
       const authDOM = AuthenticationDOM();
       authDOM.render();
     }
