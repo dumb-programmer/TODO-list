@@ -29,6 +29,18 @@ function setupLocalStorage(projectsList) {
   localStorage.setItem("projectsList", JSON.stringify(projectsList));
 }
 
+async function setupFireStore(colRef) {
+  try {
+    await addDoc(colRef, {
+      name: "Default",
+      createdAt: serverTimestamp(),
+      todos: [],
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function getProjectsList() {
   // Adds the methods back to projects
   let temp = [];
@@ -157,4 +169,5 @@ export {
   removeTODO,
   replaceTODO,
   setupLocalStorage,
+  setupFireStore,
 };

@@ -2,17 +2,15 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import loaderDom from "./loaderDOM.js";
 import genericIcon from "../images/SeekPng.com_default-avatar-png_5147412.png";
 import {
-  addDoc,
   collection,
   getDocs,
   getFirestore,
   orderBy,
   query,
-  serverTimestamp,
 } from "firebase/firestore";
 import AuthenticationDOM from "./AuthDOM";
 import ProjectDOM from "./ProjectDOM";
-import { setupLocalStorage } from "./index.js";
+import { setupLocalStorage, setupFireStore } from "./index.js";
 
 function DOM() {
   function clearScreen() {
@@ -68,18 +66,6 @@ function DOM() {
       const colRef = collection(db, user.uid);
       const q = query(colRef, orderBy("createdAt"));
 
-      async function setupFireStore() {
-        try {
-          await addDoc(colRef, {
-            name: "Default",
-            createdAt: serverTimestamp(),
-            todos: [],
-          });
-        } catch (error) {
-          console.log(error);
-        }
-      }
-
       if (localStorage.getItem("projectsList") == null) {
         let list = [];
         await getDocs(q)
@@ -93,7 +79,7 @@ function DOM() {
           });
 
         if (list.length == 0) {
-          setupFireStore();
+          setupFireStore(colRef);
           await getDocs(q).then((snapshot) => {
             snapshot.docs.forEach((item) => {
               list.push({ id: item.id, ...item.data() });
