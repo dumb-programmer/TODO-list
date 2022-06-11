@@ -56,7 +56,6 @@ function ProjectDOM(user) {
       projectName.classList.add("project-name");
       target.appendChild(projectName);
       target.append(target_icons);
-      reRenderProjects();
     });
 
     const cancelBtn = document.createElement("button");
@@ -131,7 +130,6 @@ function ProjectDOM(user) {
 
     li.addEventListener("click", () => {
       selectedProject.setSelectedProject(index);
-      reRender();
     });
 
     ulProjects.append(li);
@@ -143,63 +141,69 @@ function ProjectDOM(user) {
     const defaultProject = document.querySelector("#default");
     const ulProjects = document.getElementById("projects");
 
-    newProjectBtn.addEventListener("click", () => {
-      const li = document.createElement("li");
-      const input = document.createElement("input");
-      input.maxLength = "30";
-      input.style.marginBottom = "0.5rem";
+    if (
+      !newProjectBtn.onclick &&
+      !projectMoreBtn.onclick &&
+      !defaultProject.onclick
+    ) {
+      newProjectBtn.onclick = () => {
+        const li = document.createElement("li");
+        const input = document.createElement("input");
+        input.maxLength = "30";
+        input.style.marginBottom = "0.5rem";
 
-      const addBtn = document.createElement("button");
-      addBtn.setAttribute("id", "add-project-btn");
-      addBtn.classList.add("ok-btn");
-      addBtn.textContent = "Add";
+        const addBtn = document.createElement("button");
+        addBtn.setAttribute("id", "add-project-btn");
+        addBtn.classList.add("ok-btn");
+        addBtn.textContent = "Add";
 
-      addBtn.addEventListener("click", () => {
-        const name = input.value;
-        const project = new Project(name);
-        addProject(project, user);
+        addBtn.addEventListener("click", () => {
+          const name = input.value;
+          const project = new Project(name);
+          addProject(project, user);
 
-        const inputLi = document.querySelector("#project-input");
-        ulProjects.removeChild(inputLi);
+          const inputLi = document.querySelector("#project-input");
+          ulProjects.removeChild(inputLi);
 
+          const projectsList = getProjectsList();
+          appendProject(projectsList, projectsList.length - 1);
+        });
+
+        const cancelBtn = document.createElement("button");
+        cancelBtn.setAttribute("id", "cancel-project-btn");
+        cancelBtn.classList.add("cancel-btn");
+        cancelBtn.textContent = "Cancel";
+
+        cancelBtn.addEventListener("click", () => {
+          const li = document.querySelector("#project-input");
+          ulProjects.removeChild(li);
+        });
+
+        li.setAttribute("id", "project-input");
+        li.append(input);
+        li.append(addBtn);
+        li.append(cancelBtn);
+        ulProjects.append(li);
+      };
+
+      projectMoreBtn.onclick = () => {
+        const lis = document.querySelectorAll("#projects>li");
+        const btn = document.querySelector("#more");
         const projectsList = getProjectsList();
-        appendProject(projectsList, projectsList.length - 1);
-      });
+        if (lis.length > 0) {
+          btn.style.background = `url(${upChevronIcon})`;
+          clearProjectsList();
+        } else {
+          btn.style.background = `url(${downChevronIcon})`;
+          renderProjects(projectsList);
+        }
+      };
 
-      const cancelBtn = document.createElement("button");
-      cancelBtn.setAttribute("id", "cancel-project-btn");
-      cancelBtn.classList.add("cancel-btn");
-      cancelBtn.textContent = "Cancel";
-
-      cancelBtn.addEventListener("click", () => {
-        const li = document.querySelector("#project-input");
-        ulProjects.removeChild(li);
-      });
-
-      li.setAttribute("id", "project-input");
-      li.append(input);
-      li.append(addBtn);
-      li.append(cancelBtn);
-      ulProjects.append(li);
-    });
-
-    projectMoreBtn.addEventListener("click", () => {
-      const lis = document.querySelectorAll("#projects>li");
-      const btn = document.querySelector("#more");
-      const projectsList = getProjectsList();
-      if (lis.length > 0) {
-        btn.style.background = `url(${upChevronIcon})`;
-        clearProjectsList();
-      } else {
-        btn.style.background = `url(${downChevronIcon})`;
-        renderProjects(projectsList);
-      }
-    });
-
-    defaultProject.addEventListener("click", () => {
-      selectedProject.setSelectedProject(0);
-      reRender();
-    });
+      defaultProject.onclick = () => {
+        selectedProject.setSelectedProject(0);
+        reRender();
+      };
+    }
   }
 
   function clearProjectsList() {

@@ -5,6 +5,7 @@ import {
   collection,
   getDocs,
   getFirestore,
+  onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
@@ -35,6 +36,32 @@ function DOM() {
     localStorage.clear();
   }
 
+  async function getProjects(q) {
+    let list = [];
+    await getDocs(q)
+      .then((snapshot) => {
+        snapshot.docs.forEach((item) => {
+          list.push({ id: item.id, ...item.data() });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return list;
+  }
+
+  async function firestoreObserver(colRef, user) {
+    onSnapshot(colRef, async (snapshot) => {
+      if (!snapshot.metadata.hasPendingWrites) {
+        const q = query(colRef, orderBy("createdAt"));
+        const list = await getProjects(q);
+        setupLocalStorage(list);
+        const projectDOM = ProjectDOM(user);
+        projectDOM.render();
+      }
+    });
+  }
+
   function setupHeader() {
     const header = document.querySelector("header");
     const container = document.createElement("div");
@@ -55,10 +82,10 @@ function DOM() {
       container.appendChild(p);
     }
     container.appendChild(btn);
-    
+
     header.appendChild(container);
   }
-  
+
   async function authStateObserver(user) {
     clearScreen();
     if (user) {
@@ -67,30 +94,15 @@ function DOM() {
       const q = query(colRef, orderBy("createdAt"));
 
       if (localStorage.getItem("projectsList") == null) {
-        let list = [];
-        await getDocs(q)
-        .then((snapshot) => {
-            snapshot.docs.forEach((item) => {
-              list.push({ id: item.id, ...item.data() });
-            });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
-          if (list.length == 0) {
-            setupFireStore(colRef);
-            await getDocs(q).then((snapshot) => {
-              snapshot.docs.forEach((item) => {
-                list.push({ id: item.id, ...item.data() });
-              });
-            });
-          }
+        let list = await getProjects(q);
+        if (list.length == 0) {
+          setupFireStore(colRef);
+          list = getProjects(q);
+        }
         setupLocalStorage(list);
       }
       setup();
-      const projectDOM = ProjectDOM(user);
-      projectDOM.render();
+      firestoreObserver(colRef, user);
     } else {
       const authDOM = AuthenticationDOM();
       authDOM.render();
@@ -158,7 +170,6 @@ function DOM() {
     addTodo.appendChild(addTodoBtn);
 
     content.appendChild(addTodo);
-    content.appendChild(document.createElement("p"));
     main.appendChild(content);
   }
 

@@ -52,9 +52,11 @@ function TODO_DOM(selectedProject, user) {
 
   function addEventListeners() {
     const addTODO = document.querySelector("#add-todo");
-    addTODO.addEventListener("click", () => {
-      renderForm();
-    });
+    if (!addTODO.onclick) {
+      addTODO.onclick = () => {
+        renderForm();
+      };
+    }
   }
 
   function removeForm() {
