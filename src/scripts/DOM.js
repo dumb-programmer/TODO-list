@@ -35,31 +35,33 @@ function DOM() {
     localStorage.clear();
   }
 
+  function setupHeader() {
+    const header = document.querySelector("header");
+    const container = document.createElement("div");
+    container.setAttribute("id", "user-controls");
+    const p = document.createElement("p");
+    p.textContent = getAuth().currentUser.displayName;
+    const img = document.createElement("img");
+    img.alt = "profile picture";
+    img.src = getAuth().currentUser.photoURL || genericIcon;
+
+    const btn = document.createElement("button");
+    btn.setAttribute("aria-label", "sign out button");
+    btn.textContent = "Sign out";
+    btn.addEventListener("click", signOutUser);
+
+    container.appendChild(img);
+    if (getAuth().currentUser.displayName) {
+      container.appendChild(p);
+    }
+    container.appendChild(btn);
+
+    header.appendChild(container);
+  }
+
   async function authStateObserver(user) {
     clearScreen();
     if (user) {
-      const header = document.querySelector("header");
-      const container = document.createElement("div");
-      container.setAttribute("id", "user-controls");
-      const p = document.createElement("p");
-      p.textContent = getAuth().currentUser.displayName;
-      const img = document.createElement("img");
-      img.alt = "profile picture";
-      img.src = getAuth().currentUser.photoURL || genericIcon;
-
-      const btn = document.createElement("button");
-      btn.setAttribute("aria-label", "sign out button");
-      btn.textContent = "Sign out";
-      btn.addEventListener("click", signOutUser);
-
-      container.appendChild(img);
-      if (getAuth().currentUser.displayName) {
-        container.appendChild(p);
-      }
-      container.appendChild(btn);
-
-      header.appendChild(container);
-
       setup();
 
       const db = getFirestore();
@@ -87,12 +89,9 @@ function DOM() {
           });
         }
         setupLocalStorage(list);
-        const projectDOM = ProjectDOM(user);
-        projectDOM.render();
-      } else {
-        const projectDOM = ProjectDOM(user);
-        projectDOM.render();
       }
+      const projectDOM = ProjectDOM(user);
+      projectDOM.render();
     } else {
       const authDOM = AuthenticationDOM();
       authDOM.render();
@@ -107,6 +106,7 @@ function DOM() {
   }
 
   function setup() {
+    setupHeader();
     setupLayout();
 
     const main = document.querySelector("main");

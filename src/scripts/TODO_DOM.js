@@ -9,7 +9,6 @@ function TODO_DOM(selectedProject, user) {
     const todos = projectsList[selectedProject.index].getTODOs();
     todos.forEach((todo, i) => {
       appendTODO(todo, i);
-      i += 1;
     });
   }
 

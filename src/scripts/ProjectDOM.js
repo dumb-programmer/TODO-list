@@ -21,9 +21,7 @@ function ProjectDOM(user) {
 
   function renderProjects(projectsList) {
     for (let i = 1; i < projectsList.length; i++) {
-      if (projectsList[i] != null) {
-        appendProject(projectsList, i);
-      }
+      appendProject(projectsList, i);
     }
   }
 
