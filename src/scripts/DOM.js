@@ -55,15 +55,13 @@ function DOM() {
       container.appendChild(p);
     }
     container.appendChild(btn);
-
+    
     header.appendChild(container);
   }
-
+  
   async function authStateObserver(user) {
     clearScreen();
     if (user) {
-      setup();
-
       const db = getFirestore();
       const colRef = collection(db, user.uid);
       const q = query(colRef, orderBy("createdAt"));
@@ -71,7 +69,7 @@ function DOM() {
       if (localStorage.getItem("projectsList") == null) {
         let list = [];
         await getDocs(q)
-          .then((snapshot) => {
+        .then((snapshot) => {
             snapshot.docs.forEach((item) => {
               list.push({ id: item.id, ...item.data() });
             });
@@ -79,17 +77,18 @@ function DOM() {
           .catch((error) => {
             console.log(error);
           });
-
-        if (list.length == 0) {
-          setupFireStore(colRef);
-          await getDocs(q).then((snapshot) => {
-            snapshot.docs.forEach((item) => {
-              list.push({ id: item.id, ...item.data() });
+          
+          if (list.length == 0) {
+            setupFireStore(colRef);
+            await getDocs(q).then((snapshot) => {
+              snapshot.docs.forEach((item) => {
+                list.push({ id: item.id, ...item.data() });
+              });
             });
-          });
-        }
+          }
         setupLocalStorage(list);
       }
+      setup();
       const projectDOM = ProjectDOM(user);
       projectDOM.render();
     } else {
@@ -106,6 +105,7 @@ function DOM() {
   }
 
   function setup() {
+    clearScreen();
     setupHeader();
     setupLayout();
 

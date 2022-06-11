@@ -5,28 +5,37 @@ import {
   signInAnonymously,
   signInWithPopup,
 } from "firebase/auth";
+import loaderDom from "./loaderDOM";
 
 import googleIcon from "../images/google-icon.svg";
 import maskIcon from "../images/mask-solid.svg";
 import githubIcon from "../images/github-icon.svg";
 
 function AuthenticationDOM() {
+  function renderLoader() {
+    const loader = loaderDom();
+    loader.render();
+  }
+
   async function signInWithGoogle(e) {
     e.preventDefault();
     let provider = new GoogleAuthProvider();
     await signInWithPopup(getAuth(), provider);
+    renderLoader();
   }
 
   async function signInWithAnonymous(e) {
     e.preventDefault();
     const auth = getAuth();
-    signInAnonymously(auth);
+    await signInAnonymously(auth);
+    renderLoader();
   }
 
   async function signInWithGithub(e) {
     e.preventDefault();
     let provider = new GithubAuthProvider();
     await signInWithPopup(getAuth(), provider);
+    renderLoader();
   }
 
   const renderForm = () => {
