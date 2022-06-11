@@ -19,10 +19,12 @@ function TODO_DOM(selectedProject, user) {
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("todo-remove-btn");
     removeBtn.classList.add("icon");
+    removeBtn.setAttribute("aria-label", "remove todo");
 
     const editBtn = document.createElement("button");
     editBtn.classList.add("edit-btn");
     editBtn.classList.add("icon");
+    editBtn.setAttribute("aria-label", "edit todo");
 
     const iconContainer = document.createElement("div");
     iconContainer.classList.add("icons-container");

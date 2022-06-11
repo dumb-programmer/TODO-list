@@ -47,16 +47,19 @@ function AuthenticationDOM() {
         caption: "Sign in with Google",
         icon: googleIcon,
         callback: signInWithGoogle,
+        alt: "Google logo",
       },
       {
         caption: "Sign in with Github",
         icon: githubIcon,
         callback: signInWithGithub,
+        alt: "Github logo",
       },
       {
         caption: "Sign in Anonymously",
         icon: maskIcon,
         callback: signInWithAnonymous,
+        alt: "Mask icon",
       },
     ];
 
@@ -69,6 +72,7 @@ function AuthenticationDOM() {
       const btnIcon = document.createElement("img");
       btnIcon.classList.add("sign-in-btn-icon");
       btnIcon.src = button.icon;
+      btnIcon.alt = button.alt;
 
       btn.appendChild(btnIcon);
       btn.appendChild(btnText);
