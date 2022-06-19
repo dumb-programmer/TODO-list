@@ -168,26 +168,36 @@ aside>ul>ul {
 #content {
     position: relative;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     padding-top: 1rem;
     padding-bottom: 2rem;
-    align-items: center;
     flex-basis: 80%;
 }
 
-#content>li {
-    border-bottom: 2px solid var(--tertiary);
+#content>ul{
+    width: 80vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#content>ul>li {
     width: 60%;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 0.5rem;
     list-style: none;
+}
+
+.todo-item:not(:nth-last-child(2)) {
+    border-bottom: 2px solid var(--tertiary);
 }
 
 .icons-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 5.5rem;
+    width: 5rem;
 }
 
 .edit-btn {
@@ -197,6 +207,11 @@ aside>ul>ul {
 .detailed-view-open {
     border: 2px solid var(--tertiary);
     border-radius: 0.5rem;
+}
+
+#new-todo {
+    border-top: 2px solid var(--secondary);
+    border-bottom: 2px solid var(--secondary);
 }
 
 #add-todo {

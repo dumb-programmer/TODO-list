@@ -91,7 +91,7 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function appendTODO(todo, index) {
-    const lis = document.querySelectorAll("#content>li");
+    const lis = document.querySelectorAll("#content>ul>li");
     const last_li = lis[lis.length - 1];
 
     let expandTodo = false;
@@ -322,11 +322,11 @@ function TODO_DOM(selectedProject, user) {
   }
 
   function clearScreen() {
-    const content = document.querySelector("#content");
-    const todos = document.querySelectorAll("#content>.todo-item");
+    const todoContainer = document.querySelector("#content>ul");
+    const todos = todoContainer.querySelectorAll(".todo-item");
     if (todos != null) {
       todos.forEach((todo) => {
-        content.removeChild(todo);
+        todoContainer.removeChild(todo);
       });
     }
   }

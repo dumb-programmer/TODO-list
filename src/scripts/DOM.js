@@ -161,6 +161,8 @@ function DOM() {
     const content = document.createElement("div");
     content.setAttribute("id", "content");
 
+    const todoContainer = document.createElement("ul");
+
     const addTodo = document.createElement("li");
     addTodo.setAttribute("id", "new-todo");
     const addTodoBtn = document.createElement("button");
@@ -169,7 +171,8 @@ function DOM() {
     addTodoBtn.setAttribute("aria-label", "add todo");
     addTodo.appendChild(addTodoBtn);
 
-    content.appendChild(addTodo);
+    todoContainer.appendChild(addTodo);
+    content.appendChild(todoContainer);
     main.appendChild(content);
   }
 
