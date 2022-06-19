@@ -115,8 +115,12 @@ aside>ul>ul {
     width: 7rem;
 }
 
-#more {
+#more, .expand-todo-btn {
     background-image: url("./images/chevron-down.svg");
+}
+
+.less-btn {
+    background-image: url("./images/chevron-up.svg");
 }
 
 .icon {
@@ -176,34 +180,70 @@ aside>ul>ul {
     width: 60%;
     margin-bottom: 10px;
     padding: 10px;
-}
-
-.todo-item {
-    display: flex;
-    justify-content: space-between;
+    list-style: none;
 }
 
 .icons-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 55px;
+    width: 5.5rem;
 }
 
 .edit-btn {
     background-image: url("./images/edit-2.svg");
 }
 
-#content>li>#add:hover {
-    background-color: rgb(27, 147, 202);
-}
-
-#content>li {
-    list-style: none;
+.detailed-view-open {
+    border: 2px solid var(--tertiary);
+    border-radius: 0.5rem;
 }
 
 #add-todo {
     background-image: url("./images/plus.svg");
+}
+
+.details-container {
+    border-radius: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.5rem 0 0.5rem 0;
+}
+
+.urgency {
+    display: flex;
+    flex-direction: column;
+}
+
+.description, .urgency {
+    width: 15rem;
+}
+
+.small-heading {
+    font-weight: bold;
+    float: left;
+    margin-right: 1rem;
+}
+
+.priority-indicator {
+    float: left;
+    height: 1rem;
+    width: 1rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.calender {
+    float: left;
+    background-image: url("./images/calendar.svg");
+    background-repeat: no-repeat;
+}
+
+.small-icon {
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 .form-container {
@@ -274,5 +314,5 @@ a {
 }
 
 .todo-remove-btn {
-    background-image: url("./images/delete.svg");
+    background-image: url("./images/trash-2.svg");
 }

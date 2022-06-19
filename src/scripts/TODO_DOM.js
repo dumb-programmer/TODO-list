@@ -1,5 +1,6 @@
 import { addTODO, getProjectsList, removeTODO, replaceTODO } from "./index.js";
 import TODO from "./TODO.js";
+import toTitleCase from "./toTitleCase.js";
 
 function TODO_DOM(selectedProject, user) {
   const content = document.querySelector("#content");
@@ -12,9 +13,92 @@ function TODO_DOM(selectedProject, user) {
     });
   }
 
+  function getColorIndicator(priority) {
+    let color = "";
+    switch (priority) {
+      case "high":
+        color = "red";
+        break;
+      case "medium":
+        color = "orange";
+        break;
+      case "low":
+        color = "green";
+        break;
+    }
+    return color;
+  }
+
+  function createTodoDetail(todo) {
+    const detailsContainer = document.createElement("div");
+    detailsContainer.classList.add("details-container");
+    const desc = document.createElement("div");
+    desc.classList.add("description");
+
+    const descHeader = document.createElement("h3");
+    descHeader.textContent = "Description";
+    const descText = document.createElement("p");
+    descText.textContent = todo.getDescription();
+    desc.appendChild(descHeader);
+    desc.appendChild(descText);
+
+    const urgency = document.createElement("div");
+    urgency.classList.add("urgency");
+    const calIcon = document.createElement("span");
+    calIcon.classList.add("calender");
+    calIcon.classList.add("small-icon");
+    const dueDate = document.createElement("p");
+    dueDate.textContent = todo.getDueDate();
+    dueDate.style.marginLeft = "2rem";
+    const priorityHeading = document.createElement("span");
+    priorityHeading.textContent = "Priority";
+    priorityHeading.classList.add("small-heading");
+    const priorityIndicator = document.createElement("span");
+    priorityIndicator.classList.add("priority-indicator");
+    priorityIndicator.style.backgroundColor = getColorIndicator(
+      todo.getPriority()
+    );
+    const priority = document.createElement("p");
+    priority.textContent = toTitleCase(todo.getPriority());
+
+    const dueDateInfo = document.createElement("div");
+    dueDateInfo.style.paddingBottom = "0.5rem";
+    dueDateInfo.appendChild(calIcon);
+    dueDateInfo.appendChild(dueDate);
+
+    const priorityInfo = document.createElement("div");
+    priorityInfo.style.display = "flex";
+    priorityInfo.style.alignItems = "center";
+    priorityInfo.style.flexWrap = "wrap";
+    priorityInfo.appendChild(priorityHeading);
+    priorityInfo.appendChild(priorityIndicator);
+    priorityInfo.appendChild(priority);
+
+    const elems = [dueDateInfo, priorityInfo];
+    elems.forEach((elem) => {
+      urgency.appendChild(elem);
+    });
+
+    detailsContainer.appendChild(desc);
+    detailsContainer.appendChild(urgency);
+
+    return detailsContainer;
+  }
+
+  function removeTodoDetails(target) {
+    const detailsContainer = target.querySelector(".details-container");
+    target.removeChild(detailsContainer);
+  }
+
   function appendTODO(todo, index) {
     const lis = document.querySelectorAll("#content>li");
     const last_li = lis[lis.length - 1];
+
+    let expandTodo = false;
+    const expandTodoBtn = document.createElement("button");
+    expandTodoBtn.classList.add("icon");
+    expandTodoBtn.classList.add("expand-todo-btn");
+    expandTodoBtn.setAttribute("aria-label", "expand todo");
 
     const removeBtn = document.createElement("button");
     removeBtn.classList.add("todo-remove-btn");
@@ -26,10 +110,40 @@ function TODO_DOM(selectedProject, user) {
     editBtn.classList.add("icon");
     editBtn.setAttribute("aria-label", "edit todo");
 
-    const iconContainer = document.createElement("div");
-    iconContainer.classList.add("icons-container");
-    iconContainer.append(editBtn);
-    iconContainer.appendChild(removeBtn);
+    const iconsContainer = document.createElement("div");
+    iconsContainer.classList.add("icons-container");
+    iconsContainer.appendChild(expandTodoBtn);
+    iconsContainer.appendChild(editBtn);
+    iconsContainer.appendChild(removeBtn);
+
+    const li = document.createElement("li");
+    const container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.justifyContent = "space-between";
+    container.style.width = "100%";
+    const p = document.createElement("p");
+    p.textContent = todo.getTitle();
+    li.classList.add("todo-item");
+
+    container.appendChild(p);
+    container.appendChild(iconsContainer);
+    li.appendChild(container);
+
+    last_li.parentNode.insertBefore(li, last_li);
+    expandTodoBtn.addEventListener("click", (e) => {
+      if (!expandTodo) {
+        expandTodoBtn.classList.remove("expand-todo");
+        expandTodoBtn.classList.add("less-btn");
+        li.appendChild(createTodoDetail(todo));
+        li.classList.add("detailed-view-open");
+      } else {
+        removeTodoDetails(li);
+        expandTodoBtn.classList.remove("less-btn");
+        expandTodoBtn.classList.add("expand-todo");
+        li.classList.remove("detailed-view-open");
+      }
+      expandTodo = !expandTodo;
+    });
 
     removeBtn.addEventListener("click", () => {
       removeTODO(index, selectedProject.index, user);
@@ -39,15 +153,6 @@ function TODO_DOM(selectedProject, user) {
     editBtn.addEventListener("click", () => {
       renderEditForm(index);
     });
-
-    const li = document.createElement("li");
-    const p = document.createElement("p");
-    p.textContent = todo.getTitle();
-    li.classList.add("todo-item");
-    li.appendChild(p);
-    li.appendChild(iconContainer);
-
-    last_li.parentNode.insertBefore(li, last_li);
   }
 
   function addEventListeners() {
